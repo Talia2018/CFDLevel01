@@ -1,7 +1,12 @@
-## How to submit the capstone project
+1: Cloned from blockchainhub at github:
+		https://github.com/theblockchainhub/CFDLevel01.git
 
-- Clone this repo
-- Create your branch with your names
-- Commit your code in the newly created branch
-- Push.
-- New added project under CFD_Blockchain Team member : Mohammad Huda , FarhanNizar , Sean Xun Cao
+2: branched out as loopsystem_project
+
+3: added chaincode & network folder
+
+4: added loopGo.go in chaincode folder
+
+5: commit
+
+6: push
