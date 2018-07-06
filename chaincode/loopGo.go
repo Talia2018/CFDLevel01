@@ -16,7 +16,7 @@ type LoopAsset struct {
 }
 
 type LoopOrder struct {
-	Shipper  string `json:"shipper"`
+	Sender  string `json:"sender"`
 	OrderDate string `json:"orderdate"`
 	Status   string `json:"status"` 		//created, ready, inprogress, arrived, completed
 	Location string `json:"location"`
@@ -47,8 +47,8 @@ func (t *LoopAsset) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return t.updateOrderLocation(stub, args)
 	} else if function == "getOrderByID" { //read a Order
 		return t.getOrderByID(stub, args)
-	} else if function == "getOrderByShipper" { 
-		return t.getOrderByShipper(stub, args)
+	} else if function == "getOrderBySender" { 
+		return t.getOrderBySender(stub, args)
 	} else if function == "getOrderByLocation" { 
 		return t.getOrderByLocation(stub, args)
 	} else if function == "getAllActiveOrder" { 
@@ -105,7 +105,7 @@ func (t *LoopAsset) initOrder(stub shim.ChaincodeStubInterface, args []string) p
 	var err error
 
 	//   0       1       2     3	4
-	// "shipper", orderdate, "status", "location", "lastupdate", "receiver"
+	// "sender", orderdate, "status", "location", "lastupdate", "receiver"
 	// current time := time.Now().UTC()
 	//order id: "Order"+time.Now().UTC().Format(time.RFC850)).String()
 	
@@ -117,18 +117,18 @@ func (t *LoopAsset) initOrder(stub shim.ChaincodeStubInterface, args []string) p
 	
 
 	// ==== Check if Order already exists ====
-	//OrderAsBytes, err := stub.GetState(shipper)
+	//OrderAsBytes, err := stub.GetState(sender)
 	//if err != nil {
 	//	return shim.Error("Failed to get Order: " + err.Error())
 	//} else if OrderAsBytes != nil {
-	//	fmt.Println("This Order already exists: " + shipper)
-	//	return shim.Error("This Order already exists: " + shipper)
+	//	fmt.Println("This Order already exists: " + sender)
+	//	return shim.Error("This Order already exists: " + sender)
 	//}
 	// if (askForConfirmation() 
 	
 	
 	timestamp := time.Now().UTC().Format(time.RFC850)).String()
-	order := {Shipper:"shipper01", OrderDate: timestamp, Status: "created", Location: "ShipperLocation", LastUpdate: timestamp, Receiver: "Recever01"}	
+	order := {Sender:"sender01", OrderDate: timestamp, Status: "created", Location: "SenderLocation", LastUpdate: timestamp, Receiver: "Recever01"}	
 	orderID := "Order"+ timestamp
 	
 	orderAsBytes, err := json.Marshal(order)
@@ -169,9 +169,9 @@ func (t *LoopAsset) getOrderByID(stub shim.ChaincodeStubInterface, args []string
 }
 
 // ==========================
-// getOrderByShipper
+// getOrderBySender
 // ===========================
-func (t *LoopAsset) getOrderByShipper(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+func (t *LoopAsset) getOrderBySender(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	var name, jsonResp string
 	var err error
 
@@ -179,11 +179,11 @@ func (t *LoopAsset) getOrderByShipper(stub shim.ChaincodeStubInterface, args []s
 		return shim.Error("Incorrect number of arguments. Expecting shippper name to query")
 	}
 
-	fmt.Println("start looking for all orders created by shoipper:" , shipper)
+	fmt.Println("start looking for all orders created by shoipper:" , sender)
 		
-	shipper := strings.ToLower(args[0])
+	sender := strings.ToLower(args[0])
 	
-	queryString := fmt.Sprintf("{\"selector\":{\"docType\":\"LoopOrder\",\"shipper\":\"%s\"}}", shipper)
+	queryString := fmt.Sprintf("{\"selector\":{\"docType\":\"LoopOrder\",\"sender\":\"%s\"}}", sender)
 
 	queryResults, err := stub.GetQueryResult(queryString)
 	if err != nil {
@@ -194,9 +194,9 @@ func (t *LoopAsset) getOrderByShipper(stub shim.ChaincodeStubInterface, args []s
 	
 	//return shim.Success(queryResults)
 	
-	// Query the shipper~name index by shipper
-	// This will execute a key range query on all keys starting with 'shipper'
-	//queryResults, err := stub.GetStateByPartialCompositeKey("shipper~name", []string{shipper})
+	// Query the sender~name index by sender
+	// This will execute a key range query on all keys starting with 'sender'
+	//queryResults, err := stub.GetStateByPartialCompositeKey("sender~name", []string{sender})
 	//if err != nil {
 	//	return shim.Error(err.Error())
 	//	}
@@ -228,7 +228,7 @@ func (t *LoopAsset) getOrderByShipper(stub shim.ChaincodeStubInterface, args []s
 	}
 	buffer.WriteString("]")
 
-	fmt.Printf("getOrdersByShipper queryResult:\n%s\n", buffer.String())
+	fmt.Printf("getOrdersBySender queryResult:\n%s\n", buffer.String())
 	return shim.Success(buffer.Bytes())
 }
 
@@ -352,14 +352,14 @@ func (t *LoopAsset) getOrderByReceiver(stub shim.ChaincodeStubInterface, args []
 	}
 	buffer.WriteString("]")
 
-	fmt.Printf("getOrdersByShipper queryResult:\n%s\n", buffer.String())
+	fmt.Printf("getOrdersBySender queryResult:\n%s\n", buffer.String())
 	return shim.Success(buffer.Bytes())
 }
 
 // ==========================
 // getAllActiveOrder
 // ===========================
-func (t *LoopAsset) getOrderByReceiver(stub shim.ChaincodeStubInterface) pb.Response {
+func (t *LoopAsset) getAllActiveOrder(stub shim.ChaincodeStubInterface) pb.Response {
 	var name, jsonResp string
 	var err error
 
@@ -405,7 +405,7 @@ func (t *LoopAsset) getOrderByReceiver(stub shim.ChaincodeStubInterface) pb.Resp
 	}
 	buffer.WriteString("]")
 
-	fmt.Printf("getOrdersByShipper queryResult:\n%s\n", buffer.String())
+	fmt.Printf("getOrdersBySender queryResult:\n%s\n", buffer.String())
 	return shim.Success(buffer.Bytes())
 }
 
@@ -449,3 +449,45 @@ func (t *LoopAsset) UpdateOrderStatus(stub shim.ChaincodeStubInterface) pb.Respo
 	fmt.Println("successfully updated the status of order ...")
 	return shim.Success(nil)
 }
+
+// ==========================
+// UpdateOrderLocation
+// ===========================
+func (t *LoopAsset) UpdateOrderLocation(stub shim.ChaincodeStubInterface) pb.Response {
+	var name, jsonResp string
+	var err error
+
+		if len(args) < 2 {
+		return shim.Error("Incorrect number of arguments. Expecting 2: orderid + status ...")
+	}
+	
+	oid  := args[0]
+	loc := strings.ToLower(args[1])
+	fmt.Println("start updating the new location of order: %s ...", loc)
+		
+	orderAsBytes, err := stub.GetState(oid)
+	
+	if err != nil {
+		return shim.Error("Failed to get order:" + err.Error())
+	} else if orderAsBytes == nil {
+		return shim.Error("order id is not invalid, order does not exist.")
+	}
+
+	neworder := LoopOrder{}
+	err = json.Unmarshal(orderAsBytes, &neworder) //unmarshal it aka JSON.parse()
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	neworder.Location = loc 
+	neworder.LastUpdate=time.Now().UTC().Format(time.RFC850)).String()
+
+	neworderAsBytes, _ := json.Marshal(neworder)
+	err = stub.PutState(oid, neworderAsBytes) //rewrite the marble
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	fmt.Println("successfully updated the status of order ...")
+	return shim.Success(nil)
+}
+
