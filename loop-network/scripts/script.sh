@@ -24,6 +24,7 @@ COUNTER=1
 MAX_RETRY=5
 
 CC_SRC_PATH="github.com/chaincode/chaincode_example02/go/"
+# CC_SRC_PATH="../"
 if [ "$LANGUAGE" = "node" ]; then
 	CC_SRC_PATH="/opt/gopath/src/github.com/chaincode/chaincode_example02/node/"
 fi
@@ -60,7 +61,7 @@ joinChannel () {
                 sleep $DELAY
                 echo
         done
-	
+
 	for peer in 0 1; do
 		joinChannelWithRetry $peer 2
 		echo "===================== peer${peer}.sender joined channel '$CHANNEL_NAME' ===================== "
