@@ -3,7 +3,7 @@ CFD02 Capstone Project - Loop
 =========
 Chaincode Name ==> sender_cc.go
 
-Network Start Script
+Network Setup
 =========
 Location ==> /usr/local/fabric-samples/loop-network
 
@@ -32,7 +32,6 @@ getOrderByReceiver ==> search orders belong to certain receiver, for example "re
 getOrderHistory ==> search all transaction for certain order with Key (orderID)
 
 
-
 Node JS scripts
 =======
 enrollAdmin.js  ==> enroll admin user: "admin" for senderMSP
@@ -54,4 +53,3 @@ docker rmi -f $(docker images -aq)
 
 docker network prune
 
-=======
