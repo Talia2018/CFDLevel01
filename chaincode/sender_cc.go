@@ -7,12 +7,12 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"github.com/op/go-logging" // install by "go get -u --tags nopkcs11 github.com/op/go-logging"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
 )
 
-var log = logging.MustGetLogger("LoopAsset")
+// "github.com/op/go-logging" // install by "go get -u --tags nopkcs11 github.com/op/go-logging"
+// var log = logging.MustGetLogger("LoopAsset")
 
 type LoopAsset struct {
 }
@@ -29,22 +29,27 @@ type LoopOrder struct {
 // Init is called during chaincode instantiation to initialize any
 // data. Note that chaincode upgrade also calls this function to reset
 // or to migrate data.
-func (t *LoopAsset) Init(stub shim.ChaincodeStubInterface) pb.Response {
-    // Get the args from the transaction proposal
-    args := stub.GetStringArgs()
-    if len(args) != 2 {
-            return shim.Error("Incorrect arguments. Expecting a key and a value")
-    }
 
-    // Set up any variables or assets here by calling stub.PutState()
-
-    // We store the key and the value on the ledger
-    err := stub.PutState(args[0], []byte(args[1]))
-    if err != nil {
-            return shim.Error(fmt.Sprintf("Failed to create asset: %s", args[0]))
-    }
-    return shim.Success(nil)
+func (t *LoopAsset) Init(APIstub shim.ChaincodeStubInterface) pb.Response {
+	return shim.Success(nil)
 }
+
+// func (t *LoopAsset) Init(stub shim.ChaincodeStubInterface) pb.Response {
+//     // Get the args from the transaction proposal
+//     args := stub.GetStringArgs()
+//     if len(args) != 2 {
+//             return shim.Error("Incorrect arguments. Expecting a key and a value")
+//     }
+//
+//     // Set up any variables or assets here by calling stub.PutState()
+//
+//     // We store the key and the value on the ledger
+//     err := stub.PutState(args[0], []byte(args[1]))
+//     if err != nil {
+//             return shim.Error(fmt.Sprintf("Failed to create asset: %s", args[0]))
+//     }
+//     return shim.Success(nil)
+// }
 
 
 func (t *LoopAsset) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
@@ -132,8 +137,8 @@ func (t *LoopAsset) initOrder(stub shim.ChaincodeStubInterface, args []string) p
 	//order id: "Order"+time.Now().UTC().Format(time.RFC850)).String()
 
 
-	if len(args) != 6 {
-		return shim.Error("Incorrect number of arguments. Expecting 4")
+	if len(args) != 3 {
+		return shim.Error("Incorrect number of arguments. Expecting 3")
 	}
 	fmt.Println(" start initializing Order...")
 
@@ -150,23 +155,17 @@ func (t *LoopAsset) initOrder(stub shim.ChaincodeStubInterface, args []string) p
 
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano() / 1000000, 64)
-	type OrderGroup struct {
-		Sender 		string
-		OrderDate 	string
-		Status 		string
-		Location 	string
-		LastUpdate	string
-		Receiver	string
-	}
-
-	order := OrderGroup{
-		Sender:		"sender01",
+	
+	order := LoopOrder{
+		Sender:		args[0],
 		OrderDate: 	timestamp,
 		Status: 	"created",
-		Location: 	"SenderLocation",
+		Location: 	args[1],
 		LastUpdate: timestamp,
-		Receiver: "Recever01"}
+		Receiver: args[2]} 
+	
 	// order := {Sender:"sender01", OrderDate: timestamp, Status: "created", Location: "SenderLocation", LastUpdate: timestamp, Receiver: "Recever01"}
+	
 	orderID := "Order"+ timestamp
 
 	orderAsBytes, err := json.Marshal(order)
@@ -218,7 +217,7 @@ func (t *LoopAsset) getOrderBySender(stub shim.ChaincodeStubInterface, args []st
 
 	sender := strings.ToLower(args[0])
 
-	fmt.Println("start looking for all orders created by shoipper:" , sender)
+	fmt.Println("start looking for all orders created by shipper:" , sender)
 
 	queryString := fmt.Sprintf("{\"selector\":{\"docType\":\"LoopOrder\",\"sender\":\"%s\"}}", sender)
 

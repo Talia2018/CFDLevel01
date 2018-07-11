@@ -60,9 +60,9 @@ Fabric_Client.newDefaultKeyValueStore({ path: store_path
 	// must send the proposal to endorsing peers
 	var request = {
 		//targets: let default to the peer assigned to the client
-		chaincodeId: 'loopGo',
+		chaincodeId: 'sender_cc',
 		fcn: 'initOrder',
-		args: ['"sender01", "timestamp","created", "SenderLocation", "timestamp","Recever01"'],
+		args: ['"sender01", "SenderLocation", "Recever01"'],
 		chainId: 'senderchannel',
 		txId: tx_id
 	};
