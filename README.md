@@ -1,14 +1,52 @@
-1: Cloned from blockchainhub at github:
-		https://github.com/theblockchainhub/CFDLevel01.git
+Capstone Project - Loop
+=========
+Chaincode Name ==> sender_cc.go
 
-2: branched out as loopsystem_project
+Network Start Script
+=========
+Location ==> /usr/local/fabric-samples/loop-network
 
-3: added chaincode & loop folder
+script name ==> loopNetw.sh
 
-4: added loopGo.go inside chaincode folder
+Couch DB
+========
+We use CouchDB for comprehensiver database query
 
-5: copy network setup from Hjalmar to loop folder
+Chaincode Functions
+=========
+initOrder  ==> create and Loop order when request come in
 
-6: commit
+UpdateOrderStatus ==> update order status when Order shipped out, received by receiver etc
 
-7: push
+UpdateOrderLocation ==> update order location when GPS report received
+
+getOrderByID ==> search order by Key: orderID, which combined with "order"+ timestamp (milli seconds)
+
+getOrderBySender ==> search orders requested from certain sender, for example "sender01"
+
+getAllActiveOrder  ==> search orders are currently activer, status is "inprogess"
+
+getOrderByReceiver ==> search orders belong to certain receiver, for example "receiver01"
+
+getOrderHistory ==> search all transaction for certain order with Key (orderID)
+
+
+
+Node JS scripts
+=======
+enrollAdmin.js  ==> enroll admin user: "admin" for senderMSP
+
+registerUser.js ==> register normal user: "user1" for senderMSP
+
+invoke_add_sender01.js ==> call "initOrder" chaincode function to add an LoopOrder (with sender: sender01)
+
+query_sender01.js ==> call "getOrderBySender" chaincode function to query LoopOrder (created from above JS code)
+
+
+Reminder
+=======
+Please do a clean prior to start attempt by clear all docker images and restart
+
+docker rm -f $(docker ps -aq)
+docker rmi -f $(docker images -aq)
+docker network prune
