@@ -1,4 +1,5 @@
-Capstone Project - Loop
+
+CFD02 Capstone Project - Loop
 =========
 Chaincode Name ==> sender_cc.go
 
@@ -6,7 +7,7 @@ Network Start Script
 =========
 Location ==> /usr/local/fabric-samples/loop-network
 
-script name ==> loopNetw.sh
+startup script ==> loopNetw.sh
 
 Couch DB
 ========
@@ -48,5 +49,9 @@ Reminder
 Please do a clean prior to start attempt by clear all docker images and restart
 
 docker rm -f $(docker ps -aq)
+
 docker rmi -f $(docker images -aq)
+
 docker network prune
+
+=======
