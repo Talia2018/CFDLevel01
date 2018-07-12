@@ -1,5 +1,5 @@
 
-                                 CFD02 Capstone Project - Loop
+CFD02 Capstone Project - Loop
 =========
 
 Network Setup
