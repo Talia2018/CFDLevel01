@@ -1,5 +1,5 @@
 
-CFD02 Capstone Project - Loop
+                                 CFD02 Capstone Project - Loop
 =========
 
 Network Setup
@@ -12,7 +12,7 @@ Key&Artifact Generate ==> loopNetw.sh generate
 
 Network startup ==> loopNetw.sh up s:couchdb
 
-Network shutdown ==> loopNetw.sh up
+Network shutdown ==> loopNetw.sh down
 
 domain name ==> loopsystems.ca
 	
