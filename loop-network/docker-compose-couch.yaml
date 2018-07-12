@@ -24,7 +24,7 @@ services:
     networks:
       - loopNetw
 
-  peer0.loopsystems.ca:
+  peer0.loop.loopsystems.ca:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb0:5984
@@ -51,7 +51,7 @@ services:
     networks:
       - loopNetw
 
-  peer1.loopsystems.ca:
+  peer1.loop.loopsystems.ca:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb1:5984
@@ -78,7 +78,7 @@ services:
     networks:
       - loopNetw
 
-  peer0.sender.com:
+  peer0.sender.loopsystems.ca:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb2:5984
@@ -105,7 +105,7 @@ services:
     networks:
       - loopNetw
 
-  peer1.sender.com:
+  peer1.sender.loopsystems.ca:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb3:5984

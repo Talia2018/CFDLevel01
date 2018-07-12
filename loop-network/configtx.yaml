@@ -25,7 +25,7 @@ Organizations:
         ID: OrdererMSP
 
         # MSPDir is the filesystem path which contains the MSP configuration
-        MSPDir: crypto-config/ordererOrganizations/example.com/msp
+        MSPDir: crypto-config/ordererOrganizations/loopsystems.ca/msp
 
     - &Loop
         # DefaultOrg defines the organization which is used in the sampleconfig
@@ -35,13 +35,13 @@ Organizations:
         # ID to load the MSP definition as
         ID: LoopMSP
 
-        MSPDir: crypto-config/peerOrganizations/loopsystems.ca/msp
+        MSPDir: crypto-config/peerOrganizations/loop.loopsystems.ca/msp
 
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.loopsystems.ca
+            - Host: peer0.loop.loopsystems.ca
               Port: 7051
 
     - &Sender
@@ -52,13 +52,13 @@ Organizations:
         # ID to load the MSP definition as
         ID: SenderMSP
 
-        MSPDir: crypto-config/peerOrganizations/sender.com/msp
+        MSPDir: crypto-config/peerOrganizations/sender.loopsystems.ca/msp
 
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.sender.com
+            - Host: peer0.sender.loopsystems.ca
               Port: 7051
 
 ################################################################################
@@ -139,7 +139,7 @@ Orderer: &OrdererDefaults
     OrdererType: solo
 
     Addresses:
-        - orderer.example.com:7050
+        - orderer.loopsystems.ca:7050
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 2s

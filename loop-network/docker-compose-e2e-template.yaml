@@ -6,85 +6,111 @@
 version: '2'
 
 volumes:
-  orderer.example.com:
-  peer0.org1.example.com:
-  peer1.org1.example.com:
-  peer0.org2.example.com:
-  peer1.org2.example.com:
+  ca.loopsystems.ca:
+  orderer.loopsystems.ca:
+  peer0.loop.loopsystems.ca:
+  peer1.loop.loopsystems.ca:
+  peer0.sender.loopsystems.ca:
+  peer1.sender.loopsystems.ca:
 
 networks:
-  byfn:
+  loopNetw:
 services:
+
+  ca.loopsystems.ca:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.loopsystems.ca
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.loopsystems.ca-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA_PRIVATE_KEY
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw'
+    volumes:
+      - ./crypto-config/peerOrganizations/ca.loopsystems.ca/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca.loopsystems.ca
+    networks:
+      - loopNetw
+
   ca0:
     image: hyperledger/fabric-ca:$IMAGE_TAG
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca-org1
+      - FABRIC_CA_SERVER_CA_NAME=ca-loop
       - FABRIC_CA_SERVER_TLS_ENABLED=true
-      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.loopsystems.ca-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA1_PRIVATE_KEY
     ports:
       - "7054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA1_PRIVATE_KEY -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.loopsystems.ca-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA1_PRIVATE_KEY -b admin:adminpw -d'
     volumes:
-      - ./crypto-config/peerOrganizations/org1.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
-    container_name: ca_peerOrg1
+      - ./crypto-config/peerOrganizations/loopsystems.ca/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerLoop
     networks:
-      - byfn
+      - loopNetw
 
   ca1:
     image: hyperledger/fabric-ca:$IMAGE_TAG
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca-org2
+      - FABRIC_CA_SERVER_CA_NAME=ca-sender
       - FABRIC_CA_SERVER_TLS_ENABLED=true
-      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org2.example.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.sender.com-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA2_PRIVATE_KEY
     ports:
       - "8054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org2.example.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA2_PRIVATE_KEY -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.sender.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA2_PRIVATE_KEY -b admin:adminpw -d'
     volumes:
-      - ./crypto-config/peerOrganizations/org2.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
-    container_name: ca_peerOrg2
+      - ./crypto-config/peerOrganizations/sender.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerSender
     networks:
-      - byfn
+      - loopNetw
 
-  orderer.example.com:
+  ca.loopsystems.ca:
+    container_name: ca.loopsystems.ca
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: ca.loopsystems.ca
+    networks:
+      - loopNetw
+
+  orderer.loopsystems.ca:
     extends:
       file:   base/docker-compose-base.yaml
-      service: orderer.example.com
-    container_name: orderer.example.com
+      service: orderer.loopsystems.ca
+    container_name: orderer.loopsystems.ca
     networks:
-      - byfn
+      - loopNetw
 
-  peer0.org1.example.com:
-    container_name: peer0.org1.example.com
+  peer0.loop.loopsystems.ca:
+    container_name: peer0.loop.loopsystems.ca
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer0.org1.example.com
+      service: peer0.loop.loopsystems.ca
     networks:
-      - byfn
+      - loopNetw
 
-  peer1.org1.example.com:
-    container_name: peer1.org1.example.com
+  peer1.loop.loopsystems.ca:
+    container_name: peer1.loop.loopsystems.ca
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer1.org1.example.com
+      service: peer1.loop.loopsystems.ca
     networks:
-      - byfn
+      - loopNetw
 
-  peer0.org2.example.com:
-    container_name: peer0.org2.example.com
+  peer0.sender.loopsystems.ca:
+    container_name: peer0.sender.loopsystems.ca
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer0.org2.example.com
+      service: peer0.sender.loopsystems.ca
     networks:
-      - byfn
+      - loopNetw
 
-  peer1.org2.example.com:
-    container_name: peer1.org2.example.com
+  peer1.sender.loopsystems.ca:
+    container_name: peer1.sender.loopsystems.ca
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer1.org2.example.com
+      service: peer1.sender.loopsystems.ca
     networks:
-      - byfn
+      - loopNetw
