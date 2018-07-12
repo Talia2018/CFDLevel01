@@ -2,6 +2,13 @@
 CFD02 Capstone Project - Loop
 =========
 
+Loop is a technology-driven freight forwarder company. Loop eliminates the jargon associated with high volume shipping and creates a collaborative logistics environment. The platform provides an arena for real time tracking and visibility for shipments across multiple countries.
+
+Team Builder
+=========
+HJalmar Turesson, Jiayan Lei(Jane189800), Farhan Nizar, Mohammed Huda
+
+
 Network Setup
 =========
 Location ==> /usr/local/fabric-samples/loop-network
