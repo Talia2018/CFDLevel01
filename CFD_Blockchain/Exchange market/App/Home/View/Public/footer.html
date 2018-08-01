@@ -1,0 +1,102 @@
+<style>
+.rightwidth{ width:340px;}
+</style>
+<!--footer start-->
+
+<div class="coin_footer" style="position:relative;">
+	<div class="coin_hint">
+
+		<h2>{$info_one4.title|default="Risk warning"}</h2>
+		<p>{$config.risk_warning}</p>
+	</div>
+	<div class="coin_footerbar">
+		<div class="coin_footer_nav clearfix">
+			<div class="coin_nav coin_copy left">
+				<p><a href="{:U('Index/index')}"><img style=" height:55px;" src="{$config.logo}"></a></p>
+			</div>
+			<div class="coin_nav left">
+				<h2>{$config.name|default="Crypto Currency"}Team</h2>
+				<ul>
+					<li><a href="{:U('Index/index')}">{$config.name|default="Crypto Currency"}</a></li>
+				<volist name="team" id="vo">
+					<li><a href="{:U('Art/details',array('team_id'=>$vo['article_id']))}" target="_blank" class="left">{$vo.title}</a></li>
+                </volist>
+				</ul>
+			</div>
+			<div class="coin_nav left">
+				<h2>Help</h2>
+				<ul>
+                <volist name="help" id="vo">
+					<li><a href="{:U('Help/index',array('id'=>$vo['id']))}" target="_blank" class="left">{$vo.name}</a></li>
+                </volist>
+				</ul>
+			</div>
+			<div class="coin_nav coin_nav02 left">
+				<h2 class="clearfix"><span class="left">Contact us</span><a href="http://facebook.com/{$config.weibo}" target="_blank"><img src="/Public/Home/images/facebook.png" width="30" height="30"></img></a></h2>
+				<ul>
+					<li>Tel：{$config.tel|default="Temporary not available"}</li>
+					<li>Chat：{$config.qq1|default="Temporary not available"}</li>
+					<li><a href="mailto:{$config['email']}">Email：{$config.email|default="Temporary not available"}</a></li>
+					<li><a href="mailto:{$config['business_email']}">Business：{$config.business_email|default="Temporary not available"}</a></li>
+				</ul>
+			</div>
+			<div class="coin_nav coin_nav02 left rightwidth" style="position:relative;">
+				<!--
+              <div style="float:left; padding-top:25px; padding-left:10px;"><img style=" width:100px;" src="{$config['weixin']}"/></div>
+                -->
+              <div style=" float:left; padding-left:10px;">
+				<p class="coin_phone400">{$config.tel|default="Temporary not available"}</p>
+				<p class="coin_phonetwitter">
+					<a target="_blank" href="https://twitter.com/{$config['qq1']}"><img src="/Public/Home/images/twitter.png" width="30" height="30"></img>Online Service</a>
+				<p>Workdays:9-19 Holidays:9-18</p>
+               </div>
+				<div class="group" style="left:12px;margin-top: 40px">
+					<ul class="qq_all" style="    margin-left: 10px;">
+						<li><a style="flont:left; " href="javascript:void(0)">{$config.name|default="Crypto Currency"}Group<img style="margin-top:5px;" src="__PUBLIC__/Home/images/xiala.png"></a>
+							<ul style="margin-left: 105px;">
+								<li>{$config.name|default="Crypto Currency"}Group1 {$config.qqqun1|default="Temporary not available"}</li>
+								<li>{$config.name|default="Crypto Currency"}Group2 {$config.qqqun2|default="Temporary not available"}</li>
+								<li>{$config.name|default="Crypto Currency"}Group3 {$config.qqqun3|default="Temporary not available"}</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+<div class="footer_aq">
+	<p>{$config.copyright|default="Temporary not available"}</p>
+	<p>{$config.record|default="Temporary not available"}</p>
+	<!--
+	<ul class="footerSafety clearfix">
+        <li class="safety02"><a href="http://net.china.com.cn/" target="_blank"></a></li>
+        <li class="safety03"><a href="http://webscan.360.cn/index/checkwebsite/?url={$config['localhost']}" target="_blank"></a></li>
+        <li class="safety04"><a href="http://www.cyberpolice.cn/wfjb/" target="_blank"></a></li>
+    </ul>
+	footer end-->
+</div>
+<div id="weixin" style="position:absolute; bottom:88px; left:50%; margin-left:170px; display:block;"><!--<img src="{$config.logo}">--></div>
+<script>
+	$('#coin_weixin').mouseover(function(){
+		$('#weixin').show();
+	}).mouseout(function(){
+		$('#weixin').hide();
+	});
+</script>
+<!--footer end-->
+<script type="text/javascript" src="__PUBLIC__/Home/js/gotop.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Home/js/link.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Home/js/slides.js"></script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?0ab4db557b96d841137861e0740d1e0a";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+</div></body></html>

@@ -1,0 +1,121 @@
+<include file="App/Home/View/Public/header.html"/>
+    <!--top end-->
+<script src="./index.js"></script>
+<div id="main">
+	<div class="main_box">
+		<include file="App/Home/View/Public/left.html"/>
+		<div class="raise right clearfix">
+            <script type="text/javascript" src="./ajax.js"></script>
+<script type="text/javascript" src="./Fnc.js"></script>
+<div class="ybc_list">
+	<div class="ybcoin">
+		<h2 class="left">LTC withdraw</h2>
+		<div class="clear"></div>
+	</div>
+</div>
+<json id="json" ></json>
+        <div class="support_ybc pass_ybc" id="verifyon">
+        <div id="tagContent" class="passContent">
+        <div class="tagContent selectTag" id="tagContent0">
+                    <div class="choose_one clearfix">
+		<h2 class="left">Choose withdraw address<span style="float:right;margin-right:50px;"><strong id="coinout_showtips"></strong></span></h2>
+		<p class="right" style="font-size:12px; margin-top:8px;">If your newly added address is [uncertified], please contact official customer service for review.</p>
+	    </div>
+	    <table cellpadding="0" cellspacing="0" border="0" class="my_add">
+		<thead>
+			<tr align="center">
+				<th style="width:143px">Choose</th>
+				<th style="width:221px">Address Tag</th>
+				<th style="width:300px;">Withdraw address</th>
+				<th style="width:100px">Status</th>
+				<th style="width:144px">operate</th>
+			</tr>
+		</thead>
+        <form action="https://www.yuanbaohui.com/user_exchange/outcoinconfirm2" method="post" id="coinout_con"></form>
+		<tbody>
+            <input type="hidden" id="coins_what" name="coin_what" value="ltc">
+            			<tr align="center" style="display:none;" id="coinout_newaddr">
+				<td>New address</td>
+				<td><input type="text" class="sum" id="new_label" placeholder="Example: Crypto Currency Address of John"></td>
+				<td><input type="text" class="sum" id="wallet_address" style="width:300px;" placeholder="Example: yja67fGc8UBXLWtjwvHFkjrmYhTFGH9PTs"></td>
+				<td>&nbsp;</td>
+				<td><input type="button" class="verify" onclick="coinOut.submitNewAddr()" id="yes_add2" value="Confirm"></td>
+			</tr>
+			<tr align="right" style="display:none;" id="phone_alert2">
+				<td colspan="5"><span style="color:#f00;">The system has dialed your mobile phone to tell the verification code. Please enter the verification code.</span> <input type="text" class="verify_text" id="phone_code_wallet"><input type="button" class="verify" value="Confirm" onclick="coinOut.finaddAddress()"></td>
+			</tr>
+			<tr align="center" id="addAddress_tr">
+				<td colspan="5"><a href="javascript:coinOut.addNewAddr();" id="addNewAddress">Click to add a new Withdraw address</a></td>
+			</tr>
+		</tbody>
+	    </table>
+	    <h2 class="choose_one">Enter the amount you want to withdraw<span>(Available Balance：<strong>0 LTC</strong>)</span><span style="float:right;margin-right:20px;"><strong id="coinout2_showtips"></strong></span></h2>
+	    <table cellpadding="0" cellspacing="0" border="0" class="my_add">
+		<tbody>
+			<tr>
+            <input type="hidden" id="coin_over" value="0">
+				<td style="position:relative;"><input style="display:none"><!-- for disable autocomplete on chrome --><input type="text" class="sum" id="coin_rmb" name="num" onkeyup="coinOut.daozhang()" autocomplete="off"></td>
+				<td>Actual arrival <input type="text" class="sum" id="true_coin" disabled=""> <span style="color:#f60;">(Fees0%)<input type="hidden" value="0" id="fee_coin"></span></td>
+				<td>trading password <input type="password" style="display:none"><!-- for disable autocomplete on chrome --><input type="password" class="sum" name="pwdtrade" id="pwdtrade" autocomplete="off"></td>
+				<td><input type="submit" class="confirm" value="Confirm Withdraw"></td>
+			</tr>
+		</tbody>
+        
+	    </table>
+        	    <h2 class="choose_one">LTC Withdraw notes</h2>
+        <div class="turns">
+            <p>1.  WithdrawFees is 0%，Please Confirm before operate</p>
+            <p>2. Maximum per transfer 2000 coins</p>
+            	                <input type="hidden" id="max_coin" value="2000">
+            <input type="hidden" id="min_coin" value="5.0000">
+        </div>
+        </div>
+        <div class="tagContent" id="tagContent1">
+                    <p style=" text-align:center; font-size:18px; color:#666; margin-top:120px;">Not yet set Google verification?</p>
+            <p class="clickon"><a href="https://www.yuanbaohui.com/user_safe/twofactor">Click setting</a></p>
+        	    <h2 class="choose_one">LTC Withdraw notes</h2>
+        <div class="turns">
+            <p>1. WithdrawFees is 0%，Please Confirm before operate。</p>
+            <p>2.Maximum per transfer 2000 coins</p>
+        </div>
+        </div>
+        </div>
+    </div>
+	<div class="ybc_list">
+    <div class="ybcoin">
+        <h2 class="left">Transfer out records</h2>
+        <div class="clear"></div>
+    </div>
+	<table cellspacing="0" cellpadding="0" border="0" class="raise_list" align="center" style="border:1px solid #e1e1df;">
+		<thead>
+		<tr>
+			<th>Record ID</th>
+			<th>Transfer in wallet address</th>
+			<th>Transfer out amount</th>
+			<th>Actual arrival</th>
+			<th>operate time</th>
+			<th>Status</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr id="btc_box" class="btc_new" style="display:none">
+			<td id="btc_id"></td>
+			<td id="btc_wallet"></td>
+			<td id="btc_number"></td>
+			<td id="btc_fee"></td>
+			<td id="btc_created"></td>
+			<td class="tableEnd" id="btc_status">Wait for transfer out</td>
+		</tr>
+				</tbody>
+	</table>
+	</div>
+	</div>
+<style>.btc_new,.btc_new td {background: #DDFFDD !important;}#cb_msg_box{background:#B50000;color:#FFF;display:none;text-align:center;padding:0px;}</style>
+<script type="text/javascript" src="./tab2.js"></script>
+<script src="__PUBLIC__/Home/js/coinout.js"></script>
+		</div>
+		<div class="clear"></div>
+	</div>
+    
+<!--footer start-->
+<include file="App/Home/View/Public/footer.html"/>

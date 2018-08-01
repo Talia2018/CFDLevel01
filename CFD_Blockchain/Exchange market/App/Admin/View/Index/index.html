@@ -1,0 +1,89 @@
+<include file="App/Admin/View/Public/left.html"/>
+<!--/sidebar-->
+
+<div class="main-wrap">
+    <div class="crumb-wrap">
+        <div class="crumb-list"><i class="icon-font"></i>Home</div>
+    </div>
+    <div class="result-wrap">
+        <div class="result-title">
+            <h1>Quick operation</h1>
+        </div>
+        <div class="result-content">
+            <div class="short-wrap">
+                <li>Currently logged in as administrator: {$admin_user.name|default='admin'}</li>
+            </div>
+        </div>
+    </div>
+
+    <div class="result-wrap">
+        <div class="result-title">
+            <h1>Server information</h1>
+        </div>
+        <div class="result-content">
+            <table class="result-tab" width="100%">
+                <tr>
+                    <td width="20%">System version</td>
+                    <td width="20%">{:php_uname('r')}</td>
+                    <td width="20%">Server operation system</td>
+                    <td width="40%">{:php_uname('s')}</td>
+                </tr>
+                <tr>
+                    <td>Operating environment</td>
+                    <td>{:php_sapi_name()}</td>
+                    <td>PHP version</td>
+                    <td>{:PHP_VERSION}</td>
+                </tr>
+                <tr>
+                    <td>MySql version</td>
+                    <td>{:mysqlnd}</td>
+                    <td>Server IP</td>
+                    <td>{:GetHostByName($_SERVER['SERVER_NAME'])}</td>
+                </tr>
+                <tr>
+                    <td>Your IP</td>
+                    <td>{:$_SERVER['REMOTE_ADDR']}</td>
+                    <td>Server port</td>
+                    <td>{:$_SERVER['SERVER_PORT']}</td>
+                </tr>
+                <tr>
+                    <td>Absolute path</td>
+                    <td>{:$_SERVER['DOCUMENT_ROOT']}</td>
+                    <td>Website domain</td>
+                    <td>{:$_SERVER['SERVER_NAME']}</td>
+                </tr>
+                <tr>
+                    <td>Clear cache</td>
+                    <td><input type="button" id="button" value="Clear cache"/></td>
+                    <input type="hidden" id="type" value="Runtime-Cache"/>
+                    <td>Website developement</td>
+                    <td><a target="_blank" href="https://twitter.com/"><img src="/Public/Home/images/twitter.png" width="30" height="30"></img>{$config['qq1']}</a>
+                        </td>
+                </tr>
+                <tr>
+                    <td>Official website address</td>
+                    <td>{:$_SERVER['SERVER_NAME']}</td>
+                    <td>All rights reserved</td>
+                    <td>{:$config['copyright']}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script>
+        $(function(){
+            $('#button').click(function(){
+                if(confirm("Confirm to clear the cache?")){
+                    var $type=$('#type').val();
+                    $.post("{:U('Index/cache')}",{type:$type},function(data){
+                        alert("Cache cleanup succeeded");
+                    });
+                }else{
+                    return false;
+                }});
+        });
+    </script>
+</div>
+<!--/main-->
+</div>
+</body>
+</html>

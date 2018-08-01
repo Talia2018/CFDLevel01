@@ -1,0 +1,309 @@
+
+<include file="App/Home/View/Public/header.html"/>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/reset.css">
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/zcpc.css">
+<script src="__PUBLIC__/Home/js/zc_hm.js">
+</script><script type="text/javascript" src="__PUBLIC__/Home/js/zc_jquery.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Home/js/zc_common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/plugin/Js/layer/layer.min.js"></script>
+<style type="text/css">
+.jinduline{z-index: 3;}
+ .vip_header1 {
+        background: #fafafa;
+    }
+    .vip_user1 {
+        position: relative;
+        font-size:16px;
+        padding:10px 0px 10px 20px;
+    }
+    .vip_stop1{
+        line-height:41px;
+    }
+    .vip_upgrade ul li{
+        line-height:40px;
+    }
+    .vip_upgrade .left {
+        text-align: right;
+        width: 405px;
+    }
+    .vip_upgrade .right {
+        width: 575px;
+    }
+    .vip_upgrade .right a {
+        color:#F60;
+    }
+    .vip_upgrade .right a:hover {
+        color:#F90;
+    }
+    input{ height:25px;}
+    .jilu table td{ text-align:center;}
+    .pay-m-2 a:hover{ color:#fff !important;}
+
+</style>
+<!--top end-->
+<div class="acountbd">
+    <div class="main clearfix">
+        <h1 class="programheadtitle">[Subscription]{$list.title|default='Subscription project'}</h1>
+        <div class="pcdeleft">
+            <div class="pcdetpic">
+                <img style=" width:830px; height:445px;" src="{$list.url2|default=''}" id="sim229784" class="main_img">
+            </div>
+            <div class="pcdetinfotxt">
+                <ul class="pcinfotxtnav">
+                    <li data-id="1" class="current">Project detail</li>
+                    <li data-id="3">Project progress</li>
+                    <li data-id="2">Download</li>
+                </ul>
+                <div id="info_1" class="infodata" style="display:block;">
+                    {$list.info|default='no data for this project'}
+                </div>
+                <div id="info_2" class="infodata" style="display:none;height:100px;">
+                   <notempty name="list.wenjian_url"><a  href="{$list.wenjian_url}"><input type="button"  value="Download"  style="border:1px solid #999;text-align:center;padding:5px 10px 5px 10px;height: 30px;margin-left:100px; margin-top:30px; background:#f70; color: #fff; border-radius: 5px;
+"  /></a></notempty>
+                </div>
+                <div id="info_3" class="infodata">
+                    <div style="height: 540px;" class="jindubox">
+
+                        <div class="jinduline"></div>
+                        <div class="jindustate"><span><eq name='list.status' value='0'>Project did not start</eq><eq name='list.status' value='1'>Project in progress...</eq><eq name='list.status' value='2'>Project completion</eq></span></div>
+                        <div class="jinduitem">
+                            <gt name='list.status' value='1'>
+                                <div style="right: 50%; bottom: 305px; margin-right: 1px; padding-right: 50px;" class="jditem jditem4" data-item="4">
+                                    <i style="right: 0px; background-image: url(&quot;https://imgm.touchouwang.net/public/p_image/jingdu_2.png&quot;);" class="danshu">04</i>
+                                    <h6 style="padding-top:10px;">Subscription successful</h6>
+                                    <p>{$list.end_time|date='Y-m-d',###}</p>
+                                </div>
+                            </gt>
+                            <gt name='list.status' value='1'>
+                                <div style="left: 50%; bottom: 245px; margin-left: 1px; padding-left: 50px;" class="jditem jditem3" data-item="3">
+                                    <i style="left: 0px;" class="danshu">03</i>
+                                    <h6 style="padding-top:10px;">Subscription ends</h6>
+                                    <p>{$list.end_time|date='Y-m-d',###}</p>
+                                </div>
+                            </gt>
+                            <gt name='list.status' value='0'>
+                                <div style="right: 50%; bottom: 185px; margin-right: 1px; padding-right: 50px;" class="jditem jditem2" data-item="2">
+                                    <i style="right: 0px; background-image: url(&quot;https://imgm.touchouwang.net/public/p_image/jingdu_2.png&quot;);" class="danshu">02</i>
+                                    <h6 style="padding-top:10px;">Subscription in progress</h6>
+                                    <p>{$list.end_time|date='Y-m-d',###}----</p>
+                                </div>
+                            </gt>
+                            <div style="left: 50%; bottom: 125px; margin-left: 1px; padding-left: 50px;" class="jditem jditem1" data-item="1">
+                                <i style="left: 0px;" class="danshu">01</i>
+                                <h6 style="padding-top:10px;">Subscription open</h6>
+                                <p>{$list.add_time|date='Y-m-d',###}</p>
+                            </div>
+                            <div class="jindustate" style="top: 450px;"><span>Startup project<p style="text-align:center">{$list.ctime|date='Y-m-d',###}</p></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pcderight">
+
+            <div class="programinfo">
+                <h2>Project basic information<i></i></h2>
+                <table class="actab5">
+                    <tbody>
+                    <tr>
+                        <td>Total amount: <span>{$list.num|default='0.00'} </span></td>
+                        <td>Remaining: <span>{$list.deal|default='0.00'} </span></td>
+                    </tr>
+                    <notempty name="Think.session.USER_KEY_ID">
+                        <tr>
+                            <td>Restriction: <span>{$list.limit_count|default='0.00'} times</span></td>
+                            <td>Purchased: <span>{$list.buy_count|default='0'} times</span></td>
+                        </tr>
+                        <tr>
+                            <td>Restriction: <span>{$list.limit|default='0.00'}个</span></td>
+                            <td>Purchased: <span>{$num_buy|default='0.00'}个</span></td>
+                        </tr>
+                    </notempty>
+                    <tr>
+                        <td>Purchase crypto currency:<span>{$list.buy_name}</span></td>
+                        <td>Price: <span>{$list.price|default='0.00'}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Success ratio:<span>{$list.zhongchou_success_bili|default='100'}%</span></td>
+                        <td><div class="yuyuebox_1">
+                    		<div class="pclastdate2">
+                        	<p class="pcfenpost pcfenpost2">
+                            <eq name='list.status' value='0'><span class="pctimeico">Not start yet</span></eq>
+                            <eq name='list.status' value='1'><span class="pctimeico">Subscription in progress</span></eq>
+                            <eq name='list.status' value='2'><span class="pctimeico">End</span></eq>
+                        	</p>
+                    		</div>
+                			</div>
+                          </td>  
+                    </tr>
+                    </tbody></table>
+               
+            </div>
+            <eq name='list.status' value='0'>
+                <div class="programinfo programinfo2">
+                    <h2>I want to invest</h2>
+                    <div class="pay-m-2">
+                        <button type="button" class="btn-play-1" disabled="disabled">Subscription did not begin</button>
+                        <p>This item is <strong>not yet open</strong> does not support purchases. Please pay attention to other items</p>
+                    </div>
+                </div>
+            </eq>
+
+            <eq name='list.status' value='1'>
+                <notempty name="Think.session.USER_KEY_ID">
+                    <div class="programinfo programinfo2">
+                        <h2>I want to invest</h2>
+                        <form action="{:U('Zhongchou/run')}" method="post" id="buy_form">
+                            <div class="pay-m-1">
+                                <p>
+                                    <ins>Account Balance: </ins>
+                                    <span id="myMon">{$buy_num|floatval="###"}</span>{$list.buy_mark}
+                                    <a href="{:U('User/index')}" class="pay-recharge-btn">Charge</a>
+                                </p>
+                                <p>
+                                    <ins>Subscription volumn: </ins>
+                                      <input value="{$list.min_limit|default='0'}" class="txt-pay-1" id="num" name="num" type="number" onkeyup="sjmoney();"><span style="font-size:10px;">&nbsp;&nbsp;(minimum purchase of {$list.min_limit|number_format=###,0})</span> 
+                                </p>
+                         
+                                <p>
+                                    <ins>Actual payment amount: </ins>
+                                    <span id="manjianhou">{$list['min_limit']*$list['price']|number_format=###,0}</span>{$list.buy_mark}
+                                </p>
+                            </div>
+                            <div class="pay-m-2">
+                                <input type="button" class="btn-play-1" id="zhongchourun" onclick="zhongchou();" value="Crowdfunding">
+                            </div>
+                        </form>
+                    </div>
+                    <else/>
+                    <div class="programinfo programinfo2">
+                        <h2>I want to invest</h2>
+                        <div class="pay-m-1">
+                            <p>
+                                <ins>Account Balance: </ins>
+                                Not logged in, view after <a href="{:U('Login/index')}">login</a>
+                            </p>
+                        </div>
+
+                    </div>
+                </notempty>
+            </eq>
+
+            <eq name='list.status' value='2'>
+                <div class="programinfo programinfo2">
+                    <h2>I want to invest</h2>
+                    <div class="pay-m-2">
+                        <button type="button" class="btn-play-1" disabled="disabled">Subscription ends</button>
+                        <p>The project is <strong>Complete</strong> not supported for purchase, please follow other items</p>
+                    </div>
+                </div>
+            </eq> 
+			<eq name='list.status' value='3'>
+                <div class="programinfo programinfo2">
+                    <h2>I want to invest</h2>
+                    <div class="pay-m-2">
+                        <button type="button" class="btn-play-1" disabled="disabled">Subscription ends</button>
+                        <p>The project is <strong>Complete</strong> not supported for purchase, please follow other items</p>
+                    </div>
+                </div>
+            </eq>
+			
+            <notempty name="Think.session.USER_KEY_ID">
+                <div class="programinfo programinfo2 jilu">
+                    <h2>Investment records</h2>
+                    <table style=" width:348px; margin-top:10px;">
+                        <thead>
+                        <tr style=" height:25px; background-color:#f60; color:#FFF;">
+                            <th>times</th>
+                            <th>Amount</th>
+                            <th>Volumn</th>
+                            <th>Total amount</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name='log' id='vo' key='key'>
+                            <tr>
+                                <td>{$key}</td>
+                                <td>{$vo.price|default='0.00'}</td>
+                                <td>{$vo.num|default='0.00'}</td>
+                                <td>{$vo.count|default='0.00'}</td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+                <else/>
+                <div class="programinfo programinfo2">
+                    <h2>Investment records</h2>
+                    <p class="pay-m-1" style="text-align:center;">Not logged in, view after <a href="{:U('Login/index')}">login</a></p>
+                </div>
+            </notempty>
+        </div>
+    </div>
+</div>
+<script>
+    $(".menu6").addClass("uc-current");
+    $(".pcinfotxtnav").children("li").on("click",function(){
+        var n =$(this).index();
+        $(this).addClass("current").siblings().removeClass("current");
+        if(n==0){
+            $("#info_1").show();
+            $("#info_2").hide();
+            $("#info_3").hide();
+        }
+        if(n==1){
+            $("#info_3").show();
+            $("#info_1").hide();
+            $("#info_2").hide();
+        }
+        if(n==2){
+            $("#info_2").show();
+            $("#info_1").hide();
+            $("#info_3").hide();
+        }
+    });
+</script>
+<script>
+    function zhongchou(){
+        var limit = {$list.limit};
+        var deal = {$list.deal};
+        var price = {$list.price};
+        var min_limit = {$list.min_limit};
+        var id={$id};
+        var buy_currency_id = {$list.buy_currency_id};
+        if($("#num").val()<min_limit){
+            layer.msg("Recognition volume cannot be less than minimum volume");
+            $("#num").val("");
+        }
+        if($("#num").val()>deal){
+            layer.msg("Recognize Volume cannot exceed remaining Volume");
+            $("#num").val("");
+        }
+        if($("#num").val()>limit){
+            layer.msg("Recognize Volume cannot exceed purchase limit volume");
+            $("#num").val("");
+        }
+       layer.confirm('Confirm the funding?', {
+  btn: ['Confirm','Cancel'], //按钮
+  title: 'Tips'
+}, function(){
+  $.post("{:U('Zhongchou/run')}",{num:$("#num").val(),id:id,buy_currency_id:buy_currency_id},function(data){
+            layer.msg(data.info);
+            setTimeout(function () {
+                window.location.reload();
+            }, 2000);
+        })
+}, function(){
+  layer.msg('Cancelled');
+});
+    }
+    function sjmoney(){
+        var price = {$list.price};
+        $("#manjianhou").text($("#num").val()*price);
+    }
+</script>
+<!--footer start-->
+<include file="App/Home/View/Public/footer.html"/>
+<!--footer end-->
+<!--footer end-->

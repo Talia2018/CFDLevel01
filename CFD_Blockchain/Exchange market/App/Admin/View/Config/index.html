@@ -1,0 +1,112 @@
+
+<include file="App/Admin/View/Public/left.html" />
+<!--/sidebar-->
+<div class="main-wrap">
+	<div class="crumb-wrap">
+		<div class="crumb-list">
+			<i class="icon-font"></i><a href="{:U('Index/index')}">Home</a><span
+				class="crumb-step">&gt;</span><span class="crumb-name">System settings</span>
+		</div>
+	</div>
+	<div class="result-wrap">
+		<form action="{:U('Config/updateCofig')}" method="post" id="myform"
+			name="myform" enctype="multipart/form-data">
+			<div class="config-items">
+				<div class="config-title">
+					<h1>
+						<i class="icon-font">&#xe00a;</i>Website information settings
+					</h1>
+				</div>
+				<div class="result-content">
+					<table width="100%" class="insert-tab">
+						<tbody>
+							<tr>
+								<th width="15%"><i class="require-red">*</i>Website LOGO: </th>
+								<td><img style="width: 300px;height: 150px;border-radius: 15px;border: 1px solid;" src="{$config.logo}"><input type="hidden"
+									name="logo" value="{$config.logo}" class="common-text"></td>
+							</tr>
+							<tr>
+								<th><i class="require-red">*</i>Website LOGO upload: </th>
+								<td><input type="file" name="logo" class="common-text"></td>
+							</tr>
+							<tr>
+								<th><i class="require-red">*</i>Website URL: </th>
+								<td><input type="text" id="" value="{$config.localhost}"
+									size="85" name="localhost" class="common-text"></td>
+							</tr>
+							<tr>
+								<th><i class="require-red">*</i>Website title: </th>
+								<td><input type="text" id="" value="{$config.title}"
+									size="85" name="title" class="common-text"></td>
+							</tr>
+							<tr>
+								<th><i class="require-red">*</i>Website name: </th>
+								<td><input type="text" id="" value="{$config.name}"
+									size="85" name="name" class="common-text"></td>
+							</tr>
+							<tr>
+								<th><i class="require-red">*</i>Website Keywords: </th>
+								<td><input type="text" id="" value="{$config.keywords}"
+									size="85" name="keywords" class="common-text"></td>
+							</tr>
+							<tr>
+								<th><i class="require-red">*</i>Website crypto currency English logo:</th>
+								<td><input type="text" id="" value="{$config.xnb}"
+									size="85" name="xnb" class="common-text"></td>
+							</tr>
+							<tr>
+								<th><i class="require-red">*</i>Website crypto currency name:</th>
+								<td><input type="text" id="" value="{$config.xnb_name}"
+									size="85" name="xnb_name" class="common-text"></td>
+							</tr>
+							<tr>
+								<th><i class="require-red">*</i>Crypto currency to USDT exchange:</th>
+								<td><input type="text" id="" value="{$config.bili}"
+									size="85" name="bili" class="common-text"></td>
+							</tr>
+							<tr>
+								<th><i class="require-red">*</i>Website description: </th>
+								<td><input type="text" id="" value="{$config.desc}"
+									size="85" name="desc" class="common-text"></td>
+							</tr>
+							<tr>
+								<th><i class="require-red">*</i>Copyright Information: </th>
+								<td><input type="text" id="" value="{$config.copyright}"
+									size="85" name="copyright" class="common-text"></td>
+							</tr>
+							<tr>
+								<th><i class="require-red">*</i>Record information:</th>
+								<td><input type="text" id="" value="{$config.record}"
+									size="85" name="record" class="common-text"></td>
+							</tr>
+							<tr>
+								<th><i class="require-red">*</i>Address: </th>
+								<td><input type="text" id="" value="{$config.address}"
+									size="85" name="address" class="common-text"></td>
+							</tr>
+							<tr>
+								<th><i class="require-red">*</i>New crypto currency application form upload:</th>
+								<td><input type="file" name="biaoge_url" class="common-text"></td>
+							</tr>
+							<tr>
+								<th></th>
+								<td><input type="submit" value="Submit"
+									class="btn btn-primary btn6 mr10"> <input type="button"
+									value="Return" onclick="history.go(-1)" class="btn btn6"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+		</form>
+	</div>
+</div>
+<!--/main-->
+</div>
+</body>
+</html>
+<script>
+$(".sub-menu").eq(0).show();
+$(".sub-menu").eq(0).children("li").eq(0).addClass("on");
+</script>

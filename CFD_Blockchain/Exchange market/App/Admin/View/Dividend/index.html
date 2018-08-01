@@ -1,0 +1,113 @@
+
+<include file="App/Admin/View/Public/left.html" />
+<!--/sidebar-->
+<div class="main-wrap">
+	<div class="crumb-wrap">
+		<div class="crumb-list">
+			<i class="icon-font"></i><a href="{:U('Index/index')}">Home</a><span
+				class="crumb-step">&gt;</span><span class="crumb-name">System settings</span>
+		</div>
+	</div>
+	<div class="result-wrap">
+		<form action="{:U('Dividend/updateCofig')}" method="post" id="myform"
+			name="myform" enctype="multipart/form-data">
+			<div class="config-items">
+				<div class="config-title">
+					<h1>
+						<i class="icon-font">&#xe00a;</i>Website information settings
+					</h1>
+				</div>
+				<div class="result-content">
+					<table width="100%" class="insert-tab">
+						<tbody>
+							<tr>
+								<th><i class="require-red">*</i>Bonus Shares Name:
+								</th>
+								<td>
+									<select name="dividend_id">
+										<option value="0">No dividends</option>
+										<volist name="currency" id="vo">
+											<option value="{$vo['currency_id']}" <eq name="config.dividend_id" value="$vo.currency_id">selected</eq>>{$vo['currency_name']}</option>
+										</volist>
+									</select>
+									<span style="color:red;">The currency set for the bonus shares is the currency in which the user reaches the conditions to obtain dividends. If no bonus bonus is required, set the bonus share name as No dividends.</span>
+								</td>
+							</tr>
+							<tr>
+								<th><i class="require-red">*</i>Minimum circulation: </th>
+								<td><input type="text" id="" value="{$config.num1}"
+									size="85" name="num1" class="common-text"></td>
+							</tr>
+							<tr>
+								<th><i class="require-red">*</i>{$config.num1}---Issue volume (thousand):<br/>
+									<i class="require-red">*</i>Achieve the dividend transaction amount: <br/>
+									<i class="require-red">*</i>Do more rewards per day: <br/>
+									<i class="require-red">*</i>Achieved conditions to obtain the number of dividend shares (a)
+								</th>
+								<td><input type="text" id="" value="{$config.num2}"
+									size="85" name="num2" class="common-text"><br/>
+									<input type="text" id="" value="{$config.money1}"
+									size="85" name="money1" class="common-text"><br/>
+									<input type="text" id="" value="{$config.max1}"
+									size="85" name="max1" class="common-text"><span style="color:red;">If the user obtains more than the maximum number of coins on the same day, the performance will not increase.</span>
+									<br/>
+									<input type="text" id="" value="{$config.get1}"
+									size="85" name="get1" class="common-text">
+								</td>
+							</tr>
+							<tr>
+								<th><i class="require-red">*</i>{$config.num2}(Thousand)---Issue volume (thousand):<br/>
+									<i class="require-red">*</i>Achieve the dividend transaction amount: <br/>
+									<i class="require-red">*</i>Do more rewards per day: <br/>
+									<i class="require-red">*</i>Achieved conditions to obtain the number of dividend shares (a)
+								</th>
+								<td><input type="text" id="" value="{$config.num3}"
+									size="85" name="num3" class="common-text"><br/>
+									<input type="text" id="" value="{$config.money2}"
+									size="85" name="money2" class="common-text"><br/>
+									<input type="text" id="" value="{$config.max2}"
+									size="85" name="max2" class="common-text"><br/>
+									<input type="text" id="" value="{$config.get2}"
+									size="85" name="get2" class="common-text">
+								</td>
+							</tr>
+							<tr>
+								<th><i class="require-red">*</i>{$config.num3}(Thousand)---Issue volume (thousand):<br/>
+									<i class="require-red">*</i>Achieve the dividend transaction amount: <br/>
+									<i class="require-red">*</i>Do more rewards per day: <br/>
+									<i class="require-red">*</i>Achieved conditions to obtain the number of dividend shares (a)
+								</th>
+								<td><input type="text" id="" value="{$config.num4}"
+									size="85" name="num4" class="common-text">
+									<span style="color:red;">No dividends will be issued if the circulation exceeds the System settings circulation</span>
+									<br/>
+									<input type="text" id="" value="{$config.money3}"
+									size="85" name="money3" class="common-text"><br/>
+									<input type="text" id="" value="{$config.max3}"
+									size="85" name="max3" class="common-text"><br/>
+									<input type="text" id="" value="{$config.get3}"
+									size="85" name="get3" class="common-text">
+								</td>
+							</tr>
+							<tr>
+								<th></th>
+								<td><input type="submit" value="Submit"
+									class="btn btn-primary btn6 mr10"> <input type="button"
+									value="Return" onclick="history.go(-1)" class="btn btn6"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+		</form>
+	</div>
+</div>
+<!--/main-->
+</div>
+</body>
+</html>
+<script>
+$(".sub-menu").eq(4).show();
+$(".sub-menu").eq(4).children("li").eq(2).addClass("on");
+</script>

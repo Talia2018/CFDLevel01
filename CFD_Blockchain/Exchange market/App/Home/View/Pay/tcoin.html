@@ -1,0 +1,253 @@
+<include file="App/Home/View/Public/header.html"/>
+    <!--top end-->
+<script src="./index.js"></script>
+<div id="main">
+	<div class="main_box">
+		<include file="App/Home/View/Public/left.html"/>
+		<div class="raise right clearfix">
+            <script type="text/javascript" src="./ajax.js"></script>
+<script type="text/javascript" src="./Fnc.js"></script>
+<div class="ybc_list">
+	<div class="ybcoin">
+		<h2 class="left">{$cuid.currency_name}Withdraw</h2>
+		<div class="clear"></div>
+	</div>
+</div>
+<json id="json" ></json>
+        <div class="support_ybc pass_ybc" id="verifyon">
+        <div id="tagContent" class="passContent">
+        <div class="tagContent selectTag" id="tagContent0">
+                    <div class="choose_one clearfix">
+		<h2 class="left">Choose one Withdraw address<span style="float:right;margin-right:50px;"><strong id="coinout_showtips"></strong></span></h2>
+		<p class="right" style="font-size:12px; margin-top:8px;">If your newly added address is [uncertified], please contact official customer service ({$config.qq1}) for review.</p>
+	    </div>
+	    <table cellpadding="0" cellspacing="0" border="0" class="my_add">
+		<thead>
+			<tr align="center">
+				<th style="width:143px">Choose</th>
+				<th style="width:221px">Address tag</th>
+				<th style="width:300px">Withdraw address</th>
+				<th style="width:100px">Status</th>
+				<th style="width:144px">Operate</th>
+			</tr>
+		</thead>
+     
+		<tbody>
+            <form class="form-horizontal m-t" id="address" jump-url="{:U('Pay/tcoin',array('currency_id'=>$cuid['currency_id']))}" method="post" action="{:U('Pay/add_qianbao_address')}">
+            			<tr style="display:none;" id="coinout_newaddr" align="center">
+				<td>New address</td>
+				<td><input class="sum" id="new_label"  type="text" name="name" placeholder="Example: Address of John"></td>
+				<td><input class="sum" id="wallet_address" style="width:300px;"  type="text" name="address" placeholder="Example: yja67fGc8UBXLWtjwvHFkjrmYhTFGH9PTs" ></td>				
+				<input type="hidden" name="currency_id" value="{$cuid['currency_id']}" />
+				<td>&nbsp;</td>
+				<td><input class="verify"  id="yes_add2" value="Confirm" type="submit"></td>
+			</tr>
+			</form>
+			<!--<tr style="display:none;" id="phone_alert2" align="right">
+				<td colspan="5"><span style="color:#f00;">系统已拨打您的手机告知Verification code，请输入Verification code</span> <input class="verify_text" id="phone_code_wallet" type="text"><input class="verify" value="Confirm" onclick="coinOut.finaddAddress()" type="button"></td>
+			</tr>-->
+			
+			<empty name="list">
+			<tr align="center" id="addAddress_tr">
+				<td colspan="5"><a href="javascript:coinOut.addNewAddr();" id="addNewAddress">Click to add a new Withdraw address</a></td>
+                
+			</tr>
+			<else/>
+			<tr align="center">
+				<td>Address</td>
+				<td><input class="sum" id="new_label"  type="text" name="name" value="{$list.name|default=''}" disabled="disabled"></td>
+				<td><input class="sum" id="wallet_address" style="width:300px;"  type="text" name="address" disabled="dosabled"  value="{$list.qianbao_url|default=''}"></td>
+				<td>Available</td>
+				
+				<td><a href="{:U('Pay/del_address',array('id'=>$list['id'],'cuid'=>$cuid['currency_id']))}">Delete</a></td>
+			</tr>
+			</empty>
+		</tbody>
+	    </table>
+		  <script>	
+           $("#address").validate({			   
+                rules: {
+                    name: {
+                        required: true,
+                    },
+                    address: {
+                        required: true,
+                    }
+                },
+                messages: {
+                  name: {
+                        required: "Name cannot be empty",
+                    },
+                    cardnum: {
+                        required: 'Address cannot be empty',
+                    }
+                },
+				submitHandler:function(form){
+					ajax_submit_form(form)
+					return false;
+				},
+				invalidHandler: function() {  //不通过回调 
+					  return false; 
+				  },
+		   
+            });
+			</script> 
+			
+	    <h2 class="choose_one">Enter the amount to Withdraw<span>(Available amount：<strong>{$cuser.num} {$cuid.currency_mark}</strong>)</span><span style="float:right;margin-right:20px;"><strong id="coinout2_showtips"></strong></span></h2>
+	    <table cellpadding="0" cellspacing="0" border="0" class="my_add">
+		<form class="form-horizontal m-t" id="tibi" jump-url="{:U('Pay/tcoin',array('currency_id'=>$cuid['currency_id']))}" method="post" action="{:U('Pay/ti_bi')}">
+		<tbody>      
+        
+			<tr>
+	    	  <input type="hidden" name="currency_id" value="{$cuid.currency_id}">
+				<td style="position:relative; padding-left:90px;">Withdraw quantity<input type="text" class="sum" id="coin_rmb" name="num" ></td>
+				<td>Actual arrival <input type="text" class="sum" id="true_coin" disabled=""> <span style="color:#f60;">(Process Fees{$config.tcoin_fee|mb_substr=0,4,"utf-8"}%)</span></td>
+			</tr>
+            <tr>
+               <td style=" padding-left:90px;">transaction password <input type="password" class="sum" name="paypwd" ></td>
+               <td>Verification code
+                    <input style="display:none" type="password">
+                    <!-- for disable autocomplete on chrome -->
+                    <input class="sum" name="code" id="code" autocomplete="off" type="password">
+                    <input class="confirm"  value="Click to send" type="button" id="msgt" data-key='off' onclick="sandPhone()"></td>
+            </tr>
+            <tr>
+              <td colspan="4"><input style=" float:right; margin-right:103px;" type="submit" class="confirm" value="ConfirmWithdraw"></td>
+            </tr>
+		</tbody>
+        	</form>
+	    </table>
+        	    <h2 class="choose_one">Transfer out {$cuid.currency_name} note</h2>
+        <div class="turns">
+            <p>1. Withdraw Process Fees is {$config.tcoin_fee|mb_substr=0,4,"utf-8"}%, Please confirm before Operate.</p>
+            <p>2. Each transfer out maximum limit is {$cuid.currency_all_tibi|default="0"} coins.</p>
+            	                <input type="hidden" id="sell_fee" value="{$config.tcoin_fee}">
+            <input type="hidden" id="min_coin" value="5.0000">
+        </div>
+        </div>
+        <div class="tagContent" id="tagContent1">
+       
+        	    <h2 class="choose_one">Transfer out {$cuid.currency_name} note</h2>
+        <div class="turns">
+            <p>1.Withdraw Process Fees is {$cuid.currency_sell_fee|mb_substr=0,4,"utf-8"}%, Please confirm before Operate.</p>
+            <p>2.Each Transfer out maximum limit is 2000 coins.</p>
+        </div>
+        </div>
+        </div>
+    </div>
+	<div class="ybc_list">
+    <div class="ybcoin">
+        <h2 class="left">Transfer out record</h2>
+        <div class="clear"></div>
+    </div>
+	<table cellspacing="0" cellpadding="0" border="0" class="raise_list" align="center" style="border:1px solid #e1e1df;">
+		<thead>
+		<tr>
+			<th>Record ID</th>
+			<th>Transfer in wallet address</th>
+			<th>Transfer out quantity</th>
+			<th>Actual arrival</th>
+			<th>Operate time</th>
+			<th>Status</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist name="tibi_list" id='vo'>
+		<tr id="btc_box" class="btc_new">
+			<td id="btc_id">{$vo.id}</td>
+			<td id="btc_wallet">{$vo.url}</td>
+			<td id="btc_number">{$vo.num}</td>
+			<td id="btc_fee">{$vo.actual}</td>
+			<td id="btc_created">{$vo.add_time|date="Y-m-d H:i:s",###}</td>
+			<td class="tableEnd" id="btc_status"><eq name="vo.status" value = '0'>pending Transfer out <else/>Already arrived</eq></td>
+		</tr>
+				
+		</volist>
+				</tbody>
+	</table>
+	</div>
+	</div>
+	    <script>	
+           $("#tibi").validate({			   
+                rules: {
+                    num: {
+                        required: true,
+                    },
+                    paypwd: {
+                        required: true,
+                    },
+					code:{
+						required: true,
+					}
+                },
+                messages: {
+                  num: {
+                        required: "Amount cannot be empty",
+                    },
+                    paypwd: {
+                        required: "Please fill out the payment password",
+                    },
+					code: {
+                        required: "Please fill out Verification code",
+                    }
+                },
+				submitHandler:function(form){
+					ajax_submit_form(form)
+					return false;
+				},
+				invalidHandler: function() {  //不通过回调 
+					  return false; 
+				  },
+		   
+            });
+			</script> 
+<style>.btc_new,.btc_new td {background: #DDFFDD !important;}#cb_msg_box{background:#B50000;color:#FFF;display:none;text-align:center;padding:0px;}</style>
+
+<script src="__PUBLIC__/Home/js/coinout.js"></script>
+<script>
+$('#coin_rmb').bind('input propertychange', function() {
+	var num=$("#coin_rmb").val();
+	if(isNaN(num)){
+	 alert("Please enter the type of number");
+	}else{
+	
+	var fee=$("#sell_fee").val()/100;
+	var shiji=num*(1-fee);
+	$("#true_coin").val(shiji.toFixed(2));
+	}
+}); 
+ function sandPhone(){
+        var phone="{$member.phone}";
+		
+		var i=120;
+        var tid2;
+        tid2=setInterval(function(){
+            if($("#msgt").attr("data-key")=='off'){
+                $("#msgt").attr("disabled",true);
+                $("#msgt").removeClass("class");
+                $("#msgt").addClass("button again");
+                i--;
+                $("#msgt").val(i+" seconds before can be resent");
+                if(i<=0){
+                    $("#msgt").removeAttr("disabled").val(" resent Verification code");
+                    $("#msgt").attr("data-key","on");
+                }
+            }
+        },1000);
+        
+            $.post("{:U('Common/ajaxSandPhone')}",{'phone':phone},
+                    function(d){
+                       layer.msg(d.info);
+                        if(d.status==1){
+                            i=120;
+                            $("#msgt").attr("data-key","off");
+            	 }
+            });
+    }
+</script>
+		</div>
+		<div class="clear"></div>
+	</div>
+    
+<!--footer start-->
+<include file="App/Home/View/Public/footer.html"/>

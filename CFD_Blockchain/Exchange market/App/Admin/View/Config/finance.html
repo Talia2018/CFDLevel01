@@ -1,0 +1,76 @@
+    <include file="App/Admin/View/Public/left.html"/>
+    <!--/sidebar-->
+    <div class="main-wrap">
+        <div class="crumb-wrap">
+            <div class="crumb-list"><i class="icon-font"></i><a href="{:U('Index/index')}">Home</a><span class="crumb-step">&gt;</span><span class="crumb-name">System settings</span></div>
+        </div>
+        <div class="result-wrap">
+            <form action="{:U('Config/updateCofig')}" method="post" id="myform" name="myform" enctype="multipart/form-data">
+                <div class="config-items">
+                    <div class="config-title">
+                        <h1><i class="icon-font">&#xe00a;</i>Web site financial settings</h1>
+                    </div>
+                    <div class="result-content">
+                        <table width="100%" class="insert-tab">
+                            <tbody>
+                              <tr>
+                                    <th><i class="require-red">*</i>Trading period: start time</th>
+                                    <td>hour: <input type="text" id="" value="{$config.jiaoyi_start_hour}" size="30" name="jiaoyi_start_hour" class="common-text">&nbsp;&nbsp;&nbsp;minute: <input type="text" id="" value="{$config.jiaoyi_start_minute}" size="30" name="jiaoyi_start_minute" class="common-text"></td>
+                                </tr>
+                                <tr>
+                                    <th><i class="require-red">*</i>Trading period: end time</th>
+                                    <td>hour: <input type="text" id="" value="{$config.jiaoyi_over_hour}" size="30" name="jiaoyi_over_hour" class="common-text">&nbsp;&nbsp;&nbsp;minute: <input type="text" id="" value="{$config.jiaoyi_over_minute}" size="30" name="jiaoyi_over_minute" class="common-text"></td>
+                                </tr>
+                                <tr>
+                                    <th><i class="require-red">*</i>Artificial recharge minimum limit:</th>
+                                    <td><input type="text" id="" value="{$config.pay_min_money}" size="85" name="pay_min_money" class="common-text"></td>
+                                </tr>
+                                <tr>
+                                    <th><i class="require-red">*</i>Artificial recharge maximum limit:</th>
+                                    <td><input type="text" id="" value="{$config.pay_max_money}" size="85" name="pay_max_money" class="common-text"></td>
+                                </tr>
+                                <tr>
+                                    <th><i class="require-red">*</i>Logout time out (minutes):</th>
+                                    <td><input type="num" id="" value="{$config.time_limit}" size="85" name="time_limit" class="common-text">0 for no configuration</td>
+                                </tr>
+                                <tr>
+                                    <th><i class="require-red">*</i>Manual recharge process fee:</th>
+                                    <td><input type="text" id="" value="{$config.pay_fee}" size="85" name="pay_fee" class="common-text">USDT &nbsp;&nbsp;&nbsp;fixed fee, no please fill in 0</td>
+                                </tr>
+                                <tr>
+                                    <th><i class="require-red">*</i>Manual withdrawal process fee:</th>
+                                    <td><input type="text" id="" value="{$config.fee}" size="85" name="fee" class="common-text">%&nbsp;&nbsp;&nbsp; proportional cost, no please fill in 0</td>
+                                </tr>
+                                 <tr>
+                                    <th><i class="require-red">*</i>Withdraw process fee: </th>
+                                    <td><input type="text" id="" value="{$config.tcoin_fee}" size="85" name="tcoin_fee" class="common-text">%&nbsp;&nbsp;&nbsp; proportional cost, no please fill in 0</td>
+                                </tr>
+                                 <tr>
+                                    <th><i class="require-red">*</i>The total transaction volume of the website increased: </th>
+                                    <td><input type="text" id="" value="{$config.transaction_false}" size="85" name="transaction_false" class="common-text">For home display</td>
+                                </tr>
+                                 <tr>
+                                    <th><i class="require-red">*</i>unfreeze ratio: </th>
+                                    <td><input type="text" id="" value="{$config.jiedong_bili}" size="85" name="jiedong_bili" class="common-text">%&nbsp;&nbsp;&nbsp;Daily unfreeze at set rate</td>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <td>
+                                        <input type="submit" value="Submit" class="btn btn-primary btn6 mr10">
+                                        <input type="button" value="Return" onclick="history.go(-1)" class="btn btn6">
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--/main-->
+</div>
+</body>
+</html>
+<script>
+$(".sub-menu").eq(0).show();
+$(".sub-menu").eq(0).children("li").eq(2).addClass("on");
+</script>

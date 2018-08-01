@@ -1,0 +1,498 @@
+<include file="App/Home/View/Public/header.html"/>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/kline.css">
+<script src="__PUBLIC__/Home/js/jquery-1.js"></script>
+<script src="__PUBLIC__/Home/js/highstock.js"></script>
+<script>
+/*chart_5m = {symbol:"{$currency.currency_mark}_{$currency_trade.currency_mark}",symbol_view:"DDD/CNY",ask:1.2,time_line:{$kline_5m}};
+chart_15m = {symbol:"{$currency.currency_mark}_{$currency_trade.currency_mark}",symbol_view:"DDD/CNY",ask:1.2,time_line:{$kline_15m}};
+chart_1d = {symbol:"{$currency.currency_mark}_{$currency_trade.currency_mark}",symbol_view:"DDD/CNY",ask:1.2,time_line:{$kline_1d}};
+chart_1h = {symbol:"{$currency.currency_mark}_{$currency_trade.currency_mark}",symbol_view:"DDD/CNY",ask:1.2,time_line:{$kline_1h}};
+chart_30m = {symbol:"{$currency.currency_mark}_{$currency_trade.currency_mark}",symbol_view:"DDD/CNY",ask:1.2,time_line:{$kline_30m}};
+chart_8h = {symbol:"{$currency.currency_mark}_{$currency_trade.currency_mark}",symbol_view:"DDD/CNY",ask:1.2,time_line:{$kline_8h}};*/
+$(function() {
+  $.get("/Home/Orders/getOrdersKline",{"currency":$("#currency_id").val(),"time":"kline_1h"},function(orders){
+        kline($("#currency_mark").html()+"2"+$("#currency_trade_mark").html(),orders.kline_1h);
+
+  });
+  
+  $("#chart-control > button").click(function(){
+    $(this).addClass("btn-success").siblings().removeClass("btn-success");
+       var time = $(this).attr('data-time');
+       $.get("/Home/Orders/getOrdersKline",{"currency":$("#currency_id").val(),"time":time},function(orders){
+       kline($("#currency_mark").html()+"2"+$("#currency_trade_mark").html(),orders[time]);
+    });
+  });
+});
+</script>
+<script src="__PUBLIC__/Home/js/kline.js"></script>
+
+<style>
+  .my_coin ul li{ font-size:12px; width:145px; height:24px; overflow:hidden;}
+</style>
+<div id="main" style="background:#fbfaf8; padding-top:0;">
+  <div class="total_top" style="margin-bottom: 20px;">
+    <div class="price">
+      <img style=" float:left; width:50px; height:50px; padding-right:10px;" src="{$currency.currency_logo}" />
+      <div class="left coin_coin">{$currency.currency_name|default="Crypto currency"} to{$currency_trade.currency_name|default="Bitcoin"} <br>
+        <span id="currency_mark">{$currency.currency_mark|default="XNB"}</span> /<span id="currency_trade_mark"> {$currency_trade.currency_mark|default="BTC"}</span></div>
+      <ul class="right now_price">
+        <li>Latest price<br>
+          <span class="money" id="new_price">{$currency_message.new_price|default="0.000"}</span></li>
+        <li>Buy one price / Sell one price<br>
+          <span id="24h_sell">{$currency_message.buy_one_price|default="0.000"}</span><span> / </span><span id="24h_buy">{$currency_message.sell_one_price|default="0.000"}</span></li>
+        <li>Highest price / Lowest price<br>
+          <span id="24h_max">{$currency_message.max_price|default="0.000"}</span><span> / <span><span id="24h_min">{$currency_message.min_price|default="0.000"}</span></span></span></li>
+        <li>24H Volume<br>
+          <span id="24h_count">{$currency_message.24H_done_num|default="0.000"}</span></li>
+      </ul>
+      <div class="clear"></div>
+    </div>
+  </div>
+  <div class="main_box"> 
+    <!--普通-->
+    <div class="k_img k-box" id="k-cus-box">
+      <div id="graphbox" style="width:96%;height:455px;margin:0px auto;">
+        <div id="container" style="height: 410px; min-width: 460px"></div>
+        <div id="chart-control" data="ybc" class="btn-group centered" style="width: 98%;height: 30px;line-height: 30px; marign:0 auto;text-align:center">
+          <button data-time="kline_5m" class="btn">5 minutes line</button>
+          <button data-time="kline_15m" class="btn">15 minutes line</button>
+          <button data-time="kline_30m" class="btn">30 minutes line</button>
+          <button data-time="kline_1h" class="btn btn-success">1 hour line</button>
+          <button data-time="kline_8h" class="btn">8 hours line</button>
+          <button data-time="kline_1d" class="btn ">day line</button>
+        </div>
+      </div>
+    </div>
+     <!--交易币种id-->
+                <input value="{$currency.currency_id}" name="currency_id" type="hidden" id="currency_id">
+                 <!--交易币种id-->
+    <div class="trading left clearfix">
+      <div class="my_coin"> 
+        <!--Logon后-->
+        <notempty name="session">
+          <ul>
+            <li style="width: 200px; overflow: hidden; height: 24px;">My{$currency.currency_name|default="Crypto currency"} asset:</li>
+            <li>Available:<span class="sell" id="from_over">{$user_currency_money['currency']['num']|default=0.00}</span></li>
+            <li>Freeze:<span class="buy" id="from_lock">{$user_currency_money['currency']['forzen_num']|default=0.00}</span></li>
+            <li>Total amount:<span style="color:#333;" id="from_total">{$user_currency_money['currency']['num']+$user_currency_money['currency']['forzen_num']}</span></li>
+            <div class="clear"></div>
+          </ul>
+          <ul>
+            <li style="width: 200px; overflow: hidden; height: 24px;">My{$currency_trade.currency_name|default="BTC"}asset:</li>
+            <li>Available:<span class="sell" id="to_over">{$user_currency_money['currency_trade']['num']|default=0.00}</span></li>
+            <li>Freeze:<span class="buy" id="to_lock">{$user_currency_money['currency_trade']['forzen_num']|default=0.00}</span></li>
+            <li>Total amount:<span style="color:#333;" id="to_total">{$user_currency_money['currency_trade']['num']+$user_currency_money['currency_trade']['forzen_num']}</span></li>
+            <div class="clear"></div>
+          </ul>
+          <else/>
+          <p>Myasset:<a href="{:U('Login/index')}">Logon</a> | <a href="{:U('Reg/reg')}">Register</a></p>
+        </notempty>
+      </div>
+      <div class="curve pay">
+        <div class="buysell sellform">
+          <div class="buyformarea left">
+            <h2 class="buy">Buy {$currency.currency_name|default="Crypto currency"}</h2>
+            <ul class="buyform">
+              <li>
+                <label>Best buy price:</label>
+                <h3 id="coinbuy_nice" class="buy left">{$sell_record[count($sell_record)-1]['price']|default="0.000"}</h3>
+              </li>
+              <li>
+                <label for="price" class="buys">Buy price:</label>
+                <input value="{$currency_message.buy_one_price|default='0.000'}" style="color:#999" name="buyprice" id="coinpricein" onkeyup="vNum(this,{$currency.currency_digit_num});zuidakemai();" onclick="if(value==defaultValue){value='';}" onblur="if(value==''){value='0.000';}" type="text">
+              </li>
+              <li>
+                <label for="num" class="buys">Max available:</label>
+                <b id="coinbuy_max"  title="Click to write the value to the number input box"></b><span class="maxcoin">0</span> </li>
+              <li>
+                <label for="buynum" class="buys">Amount:</label>
+                <input style="display:none;">
+                <!-- for disable autocomplete on chrome -->
+                <input name="buynum" id="numberin" onkeyup="vNum(this,{$currency.currency_digit_num});" autocomplete="off" type="text" value="">
+              </li>
+              <li>
+                <label for="buyword" class="buys">Trade password:</label>
+                <input style="display:none;">
+                <!-- for disable autocomplete on chrome -->
+                <input class="buyinput" value="" id="pwdtradein" autocomplete="off" type="password" name="buypwd">
+              </li>
+              <li style="margin-bottom:0;">
+                <label for="num" class="buys">Processing fee:</label>
+                <b id="feebuy">0.00</b><span>（{$currency.currency_buy_fee|default="0.00%"}% {$currency.currency_mark|default="--"}）</span></li>
+              <li>
+                <label for="num" class="buys">Volume:</label>
+                <b id="coinin_sumprice">0.00</b> {$currency_trade.currency_mark|default="CNY"}</li>
+            </ul>
+            <p class="sellform">
+              <input id="trustbtnin" onclick="buy()" class="submit" value="Buy" type="button">
+            </p>
+            <p class="sellform" style="margin:15px 0;"><span id="trustmsgin" class="tishi">Digital currency trading is extremely risky</span></p>
+            <p class="sellform" style="margin:15px 0;"><span id="trustmsgin" class="tishi">Investment needs to be careful!</span></p>
+          </div>
+          <div class="buyformarea right">
+            <h2 class="sell">Sell {$currency.currency_name|default="Crypto currency"} </h2>
+            <ul class="buyform sellform">
+              <li>
+                <label>Best sell price:</label>
+                <h3 id="coinsale_nice" class="sell left">{$buy_record[0]['price']|default="0.000"}</h3>
+              </li>
+              <li>
+                <label for="price" class="buys">sell price:</label>
+                <input value="{$currency_message.buy_one_price|default='0.000'}" style="color:#999" class="buyinput" id="coinpriceout" onkeyup="vNum2(this,{$currency.currency_digit_num});" onclick="if(value==defaultValue){value='';}" onblur="if(value==''){value='0.000';}" type="text">
+               
+              </li>
+              <li>
+                <label for="num" class="buys">Max available:</label>
+                <b id="coinsale_max" onclick="$('#numberout').val(this.innerHTML)" title="Click to write the value to the number input box">{$sell_num|default=0}</b><span></span> </li>
+              <li>
+                <label for="buynum" class="buys">Amount:</label>
+                <input style="display:none;">
+                <!-- for disable autocomplete on chrome -->
+                <input class="buyinput" id="numberout" onkeyup="vNum2(this,{$currency.currency_digit_num});" autocomplete="off" type="text">
+              </li>
+              <li>
+                <label for="buyword" class="buys">Trade password:</label>
+                <input style="display:none;">
+                <!-- for disable autocomplete on chrome -->
+                <input class="buyinput" id="pwdtradeout" autocomplete="off" type="password">
+              </li>
+              <li style="margin-bottom:0;">
+                <label for="num" class="buys">Processing fee:</label>
+                <b id="fee">0.00</b><span>（{$currency.currency_sell_fee|default="0.00"}% {$currency_trade.currency_mark|default="--"}）</span></li>
+              <li>
+                <label for="num" class="buys">Volume:</label>
+                <b id="coinout_sumprice">0.00</b>{$currency_trade.currency_mark|default="CNY"}</li>
+            </ul>
+            <p class="sellform2">
+              <input class="submit" id="trustbtnout" value="sell" onclick="sell();" type="button">
+            </p>
+            <p class="sellform" style="margin:15px 0;"><span id="trustmsgout" class="tishi">Digital currency trading is extremely risky</span></p>
+            <p class="sellform" style="margin:15px 0;"><span id="trustmsgout" class="tishi">Investment needs to be careful!</span></p>
+          </div>
+          <div class="clear"></div>
+        </div>
+        <h2>Latest transactions<a href="{:U('Trade/mydeal')}" class="right my_coin_trade">My deal</a></h2>
+        <div class="buysell" style="border:1px solid #d2d2d2;">
+          <ul class="record_title">
+            <li>Transaction time</li>
+            <li>type</li>
+            <li>transaction price</li>
+            <li>Volume</li>
+            <li>Total</li>
+          </ul>
+          <div class="record">
+            <table class="latest_list record_list" align="center" border="0" cellpadding="0" cellspacing="0">
+              <tbody id="coinorderlist">
+                <volist name='trade' id='vo'>
+                <tr>
+                  <td class="list_con1">{$vo.trade_time|date=' H:i:s',###}</td>
+                  <td class="list_con1 {$vo.type}"><eq name='vo.type' value='sell'>sell<else/>Buy</eq></td>
+                  <td class="list_con1 {$vo.type}">{$vo.price|default='no data'}</td>
+                  <td class="list_con1">{$vo.num|default='no data'}</td>
+                  <td class="list_con1">{$vo['num']*$vo['price']}</td>
+                </tr>
+                </volist>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="latest right clearfix">
+      <p class="more_coin"><a href="{$currency.detail_url|default=''} " target="_blank">Check currency details</a></p>
+
+       <notempty name="session">
+
+      <h2 style="margin-top:20px;">My delegate<a href="{:U('Entrust/manage')}" class="right my_coin_trade">All delegate</a></h2>
+      <div style="border:1px solid #d2d2d2; color:#333;">
+        <ul class="my_title">
+          <li style=" width:40px;">type</li>
+          <li style=" width:65px; text-align:left; padding-left:10px;">Delegate price</li>
+          <li style=" width:100px; text-align:left; padding-left:10px;">Delegate quantity</li>
+          <li style=" width:52px; text-align:left; padding-left:10px;">Status</li>
+          <li style=" width:52px; text-align:left; padding-left:10px;">Operate</li>
+        </ul>
+        <div class="my_record">
+          <table class="latest_list weituo" style=" width:291px;" align="center" border="0" cellpadding="0" cellspacing="0">
+            <tbody id="mycointrustlist">
+            <foreach name='user_orders' item='v'>
+             <tr class="list_con2">
+              <td class="{$v['type']} left_sell" style="width:55px;">{$v['type']|fomatOrdersType=###}</td>
+              <td style="width:50px;">{$v.price|default=0.00}</td>
+              <td>{$v['num']-$v['trade_num']}</td>
+              <td style="width:60px;"><span style="width:<php>echo setOrdersTradeNum($v['num'],$v['trade_num']);</php>%" class="{$v['type']}Span"></span></td>
+              <td style="width:40px;"><a href="javascript:void(0)"  onclick="cexiao({$v.orders_id})">Cancel</a></td>
+            </tr>
+            </foreach>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <else/>
+      <div style="border:1px solid #e2e2e2; margin:15px 0; padding:15px; color:#333; background:#fff; line-height:20px; font-size:14px; text-align:left;">
+                <p style="width:278px; word-break:break-all;">Trading Rules:<br>
+               {$config.VAP_rule}
+                </p>
+        </div>
+      </notempty>
+      <div style="margin-top:0px;">
+        <h2>Delegate information</h2>
+      </div>
+      <table cellspacing="0" cellpadding="0" border="0" class="latest_list weituo" align="center" style="border:1px solid #d2d2d2;">
+        <tbody id="coinsalelist">
+          <volist name='sell_record' key='k' id='vo'>
+            <tr class="list_con2">
+              <td class="sell left_sell" style="width:55px;">Sell(<php>echo count($sell_record)-$k+1</php>)</td>
+              <td style="width:70px;" onclick="getsell(this)">{$vo.price|default=0.00}</td>
+              <td onclick="sellnum(this)">{$vo['num']-$vo['trade_num']}</td>
+              <td style="width:80px;"><span style="width:{$vo.bili}%" class="sellSpan"></span></td>
+            </tr>
+          </volist>
+        </tbody>
+      </table>
+      <table cellspacing="0" cellpadding="0" border="0" class="latest_list weituo" align="center" style="border:1px solid #d2d2d2;">
+        <thead>
+          <tr style="height:26px;">
+            <th style="height:26px; text-align:center; width:55px;" class="left_sell">Sell / Buy</th>
+            <th style="height:26px; width:70px;">Price</th>
+            <th style="height:26px;">Delegate amount</th>
+            <th style="height:26px;">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody id="coinbuylist">
+          <volist name='buy_record' key='k' id='vo'>
+            <tr class="list_con2">
+              <td class="buy left_sell" style="width:55px;" onclick="getbuy(this);">Buy({$k})</td>
+              <td style="width:70px;" onclick="buynum(this);">{$vo.price|default=0.00}</td>
+              <td>{$vo['num']-$vo['trade_num']}</td>
+              <td style="width:80px;"><span style="width:{$vo.bili}%" class="buySpan"></span></td>
+            </tr>
+          </volist>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="clear"></div>
+</div>
+<format id="price_float" data="3"></format>
+<!--footer start--> 
+<include file="App/Home/View/Public/footer.html"/> 
+<!--footer end--> 
+<input type="hidden" value="{$currency.currency_name|default='Crypto currency'}"  id = "cname"/>
+<script>
+function sell(){
+  var cname=$("#cname").val();
+  if($("#coinpriceout").val()==""){
+    $("#trustmsgout").text("sell Price can not be empty").fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500);
+    return false;
+  }
+  if($("#numberout").val()==""){
+    $("#trustmsgout").text("sell quantity can not be empty").fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500);
+    return false;
+  }
+  if($("#pwdtradeout").val()==""){
+    $("#trustmsgout").text("transaction password can not be empty").fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500);
+    return false;
+  }
+  if(($("#coinpriceout").val())*($("#numberout").val())<1){
+    $("#trustmsgout").text("The transaction amount can not be lower than 1").fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500);
+    return false;
+  }
+  layer.confirm('Confirm sell?', {
+      btn: ['Confirm','Cancel'] //按钮
+    }, function(index){
+      layer.close(index);
+      $("body").append("<div id='loading' style='z-index:19891014; background-color:#000; opacity:0.3; filter:alpha(opacity=30);top: 0;left: 0;width: 100%;height: 100%;position: fixed;_position: absolute;text-align:center;'><img src='/Public/Home/images/loading.gif' style='margin-top:25%;' /></div>");
+      $.ajax({
+        type:"post",
+        url:"{:U('Trade/sell')}",
+        data:{sellprice:$("#coinpriceout").val(),sellnum:$("#numberout").val(),sellpwd:$("#pwdtradeout").val(),currency_id:$("#currency_id").val()},
+        async:true,
+        success: function(d){
+          $("#loading").remove();
+          if(d.status!=1){
+          $("#trustmsgout").text(d.info).fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500);  
+          //加一个提示
+          layer.msg(d.info);
+          }else{
+          layer.msg(d.info);
+          //刷新页面
+          setTimeout(window.location.reload(),2000);
+          }
+        }
+      });
+}, function(){
+  layer.msg('Already Cancel');
+});
+
+}
+function buy(){
+  if($("#coinpricein").val()==""){
+    $("#trustmsgin").text("BuyPricecan not be empty").fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500);
+    return false;
+  }
+  if($("#numberin").val()==""){
+    $("#trustmsgin").text("Buyquantitycan not be empty").fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500);
+    return false;
+  }
+  if($("#pwdtradein").val()==""){
+    $("#trustmsgin").text("transaction passwordcan not be empty").fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500);
+    return false;
+  }
+  if(($("#coinpricein").val())*($("#numberin").val())<1){
+    $("#trustmsgin").text("The transaction amount can not be lower than 1").fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500);
+    return false;
+  }
+  layer.confirm('Confirm Buy?', {
+    btn: ['Confirm ','Cancel'] //按钮
+  }, function(index){
+    layer.close(index);
+    $("body").append("<div id='loading' style='z-index:19891014; background-color:#000; opacity:0.3; filter:alpha(opacity=30);top: 0;left: 0;width: 100%;height: 100%;position: fixed;_position: absolute;text-align:center;'><img src='/Public/Home/images/loading.gif' style='margin-top:25%;' /></div>");
+    $.ajax({
+      type:"post",
+      url:"{:U('Trade/buy')}",
+      data:{buyprice:$("#coinpricein").val(),buynum:$("#numberin").val(),buypwd:$("#pwdtradein").val(),currency_id:$("#currency_id").val()},
+      async:true,
+      success: function(d){
+        $("#loading").remove();
+        if(d.status!=1){
+        $("#trustmsgin").text(d.info).fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500);  
+        //加一个提示
+        layer.msg(d.info);
+        }else{
+        layer.msg(d.info);
+        //刷新页面
+        setTimeout(window.location.reload(),2000);
+        }
+      }
+    });
+  }, function(){
+  layer.msg('Already Cancel');
+});
+}
+function badFloat(num, size){
+    if(isNaN(num)) return true;
+    num += '';
+    if(-1 == num.indexOf('.')) return false;
+    var f_arr = num.split('.');
+    if(f_arr[1].length > size){
+        return true;
+    }
+    return false;
+}
+//格式化小数
+//@f float 传入小数: 123; 1.1234; 1.000001;
+//@size int 保留位数
+//@add bool 进位: 0舍 1进
+function formatfloat(f, size, add){
+    f = parseFloat(f);
+    if(size == 2) conf = [100,0.01];
+    if(size == 3) conf = [1000,0.001];
+    if(size == 4) conf = [10000,0.0001];
+    if(size == 5) conf = [100000,0.00001];
+    if(size == 6) conf = [1000000,0.000001];
+    if(size == 7) conf = [10000000,0.0000001];
+  if(size == 8) conf = [100000000,0.00000001];
+    var ff = Math.floor(f * conf[0]) / conf[0];
+    if(add && f > ff) ff += conf[1];
+    return isNaN(ff)? 0: ff;
+}
+function vNum(o, len){
+  if($("#coinpricein").val()!="" || $("#coinpricein").val()!="This bid is for 1 coin Price" && $("#numberin").val()!=""){
+    if(badFloat(o.value, len))
+    o.value=formatfloat(o.value,len,0);
+    var fee2 = {$currency.currency_buy_fee} /100;
+    var ci = $("#coinpricein").val()*$("#numberin").val();
+    var ct2 = ci ;//+ ci * fee2;
+    
+    $("#feebuy").text(Math.round(ci*fee2*10000)/10000);
+    $("#coinin_sumprice").text(Math.round(ct2*10000)/10000);
+  }
+}
+
+function vNum2(o, len){
+  if($("#coinpriceout").val()!="" || $("#coinpriceout").val()!="This bid is for 1 coin Price" && $("#numberout").val()!=""){
+  if(badFloat(o.value, len))
+    o.value=formatfloat(o.value, len, 0);
+  var nt = $("#coinpriceout").val()*$("#numberout").val();
+  var fee = {$currency.currency_sell_fee} /100;
+  var ct = nt;// - nt * fee;
+  
+  $("#fee").text(Math.round(nt*fee*10000)/10000);
+  $("#coinout_sumprice").text(Math.round(ct*10000)/10000);
+  }
+  
+}
+//5秒自动刷新挂单记录
+setInterval(function(){
+  $.post('/Home/Orders/getOrders',{"type":'sell',"currency_id":$("#currency_id").val()},function(data){
+    $("#coinsalelist").empty();
+    var length=parseInt(data.length)
+    for(var i=0;i<data.length;i++){
+      $("#coinsalelist").append(
+        "<tr class='list_con2'><td class='sell left_sell' style='width:55px;'>Sell("+(length-i)+")</td><td style='width:70px;cursor:pointer;' onclick='getsell(this)'>"+data[i]['price']+"</td><td onclick='sellnum(this);'>"+parseFloat(data[i]['num']-data[i]['trade_num'])+"</td><td style='width:80px;'><span style='width:"+data[i]['bili']+"%' class='sellSpan'></span></td></tr>"
+      );
+    }
+  });
+    $.post('/Home/Orders/getOrders',{"type":'buy',"currency_id":$("#currency_id").val()},function(data){
+    $("#coinbuylist").empty();
+    var length=parseInt(data.length)
+    for(var i=0;i<data.length;i++){
+      $("#coinbuylist").append(
+        "<tr class='list_con2'><td class='buy left_sell' style='width:55px;'>Buy("+(parseInt(i)+1)+")</td><td style='width:70px;cursor:pointer;' onclick='sellnum(this);'>"+data[i]['price']+"</td><td onclick='buynum(this);'>"+parseFloat(data[i]['num']-data[i]['trade_num'])+"</td><td style='width:80px;'><span style='width:"+data[i]['bili']+"%' class='buySpan'></span></td></tr>"
+      );
+    }
+  })    
+},5000);
+
+
+</script>
+<script>
+function zuidakemai(){
+  if($("#coinpricein").val()!="" && $("#coinpricein").val()!=0){
+    var m = {$user_currency_money.currency_trade.num|default=0};
+    var fee={$currency.currency_buy_fee}/100;
+    m=m*(1-fee);
+    var n = parseFloat($("#coinpricein").val());
+    
+    $(".maxcoin").text(Math.round(m/n*10000)/10000);
+  }else{
+    $(".maxcoin").text(0);
+  }
+}
+</script>
+<script>
+  function cexiao(_this){
+    layer.confirm('Confirm Cancel delegate？', {
+    btn: ['Confirm ','Cancel'], //按钮
+    title: 'Cancel delegate'
+  }, function(){
+    $.post('{:U('Entrust/cancel')}',{status:-1,order_id:_this},function(data){
+           if(data['status'] == 1){
+             layer.msg(data['info']);
+             setTimeout(window.location.reload(),1000);
+           }else{
+             layer.msg(data['info']);
+           }
+      })
+  }, function(){
+    layer.msg('Already Cancel');
+  });
+
+  }
+  
+  function getsell(_this){
+    $("#coinpricein").val($(_this).text());
+    zuidakemai();
+  }
+  function sellnum(_this){
+    $("#numberin").val($(_this).text());
+  }
+  function getbuy(_this){
+    $("#coinpriceout").val($(_this).text());
+  }
+  function buynum(_this){
+    $("#numberout").val($(_this).text());
+  }
+
+</script>

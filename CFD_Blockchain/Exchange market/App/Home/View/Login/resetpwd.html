@@ -1,0 +1,78 @@
+<include file="App/Home/View/Public/header.html"/>
+<style>
+    .loginBox .login label.error{
+        float:inherit;
+        padding-left: 10px;
+    }
+    .error{
+        color: #999;
+    }
+</style>
+<div class="mainbody">
+
+    <div class="bigcontainer">
+        <div class="left630">
+            <h2 class="user">Reset password</h2>
+
+            <div class="loginBox">
+                <form method="post" id="resetPwdForm"  action="{:U('Login/resetPwd')}" jump-url="{:U('Index/index')}">
+                    <ul class="login">
+                        <li><label for="email">New password:</label><input type="password" class="loginValue" id="pwd" name="pwd" value=""></li>
+                        <li><label for="email">Confirm new password:</label><input type="password" class="loginValue" id="repwd" name="repwd" value=""></li>
+                        <li><label for="idcard">ID number:</label><input type="text" name="idcard" placeholder="option If the account is not certified"></li>
+                        <li><label>Verification code:</label><input class="loginValue" name="captcha" id="captcha">
+                            <img id="captchaimg" src="{:U('Login/showVerify')}">
+                            <a href="#" onclick="$('#captchaimg').attr('src', '{:U(\'Login/showVerify\')}?t='+Math.random())">Not clear?</a></li>
+                        <li style="margin-bottom:15px;"><label>&nbsp;</label><input type="submit" value="找回密码" class="tijiao" style="border:0;"></li>
+                        <li><label>&nbsp;</label>Existing account&nbsp;<a href="{:U('Login/index')}">Logon</a><span>没有{$config.name|default='Lemonthy'}Account?&nbsp;<a href="{:U('Reg/reg')}" class="zhuce">Register</a></span></li>
+                    </ul>
+                    <input type="hidden" name="key" value="{$key}"/>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $("#resetPwdForm").validate({
+        rules: {
+            pwd:{
+                required:true,
+                rangelength:[6,20]
+            },
+            repwd:{
+                required:true,
+                rangelength:[6,20],
+                equalTo:"#pwd"
+            },
+            captcha:{
+                required:true
+            }
+
+        },
+        messages: {
+            pwd:{
+                required:"password can not be blank",
+                rangelength:"Password length between 6-20 characters"
+            },
+            repwd:{
+                required:"Confirm password can not be blank",
+                rangelength:"Password length between 6-20 characters",
+                equalTo:"Must be consistent with password"
+            },
+            captcha:{
+                required:"verification code must be filled"
+            }
+        },
+        submitHandler:function(form){
+            ajax_submit_form(form)
+            return false;
+        },
+        invalidHandler: function() {  //不通过回调
+            return false;
+        }
+    });
+</script>
+
+<!--footer start-->
+<include file="App/Home/View/Public/footer.html"/>

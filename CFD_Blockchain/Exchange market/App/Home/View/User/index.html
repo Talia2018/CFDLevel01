@@ -1,0 +1,121 @@
+<include file="App/Home/View/Public/header.html"/>
+    <!--top end-->
+<style>
+.list_con1 td input,.list_con2 td input{
+border: 1px solid #e55600;
+color:#e55600;
+border-radius: 3px;
+width: 90px;
+height: 30px;
+margin: 5px;
+cursor: pointer;
+}
+.list_con1 td input:hover,.list_con2 td input:hover{
+border: 1px solid #e55600;
+border-radius: 3px;
+width: 90px;
+height: 30px;
+margin: 5px;
+cursor: pointer;
+color:#FFF;
+background-color:#e55600;	
+}
+
+.list_con1:hover{
+	background-color:#FFE9D2;
+	}
+.list_con2:hover{
+	background-color:#FFE9D2;
+	}
+a{text-decoration:none;}	
+</style>
+<script src="js/index.js"></script>
+<div id="main">
+	<div class="main_box">
+		<include file="App/Home/View/Public/left.html"/>
+		<div class="raise right clearfix">
+            	<div class="ybc_list">
+                
+		<div class="ybcoin" id="mycoin">
+        <div style="font-weight:500;font-size: 18px;">Account assets
+        <span style="font-weight:normal;color:#e55600;font-size:12px;padding-left: 15px;">recommend {$config.name|default='crypto currency'}Earn commissions, earn easy money!</span></div>
+        <div class="coin_style_box">
+                    <ul>
+                        <li><img src="/Public/Home/images/coin_rmb.png">　USDT</li>
+                        <li>Available: <span style="color:green;" >{$u_info['rmb']}</span></li>
+                        <li>Freeze: <span style="color:orange;" >{$u_info['forzen_rmb']}</span></li>
+                        <li>Total assets: <b>{$u_info['rmb']+$u_info['forzen_rmb']}</b></li>
+                    </ul>
+                </div>
+        
+        
+	   <!-- 账户总资产估算新改:-->
+            
+            
+            
+			<div class="clear" style="margin-bottom:15px;"></div>
+		</div>
+        
+       
+        
+        
+        		<!--会员条件不符的时候显示 点击×之后不再显示-->
+				<table class="raise_list" align="center" border="0" cellpadding="0" cellspacing="0">
+			<thead>
+				<tr class="list_head">
+					<th class="assets01">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name</th>
+					<th class="assets02">Total amount</th>
+					<th class="assets02">Available</th>
+					<th class="assets02">Freeze<a class="ico_tishi" id="pledge" href="" onmouseover="showTips('#pledge','Freeze reasons: currency transaction, cash withdrawal/coin processing, project crowdfunding, project transaction')" style="background:#999; color:#fff; padding:2px 5px; border-radius:10px; text-decoration:none; margin-left:5px; font-family:monospace;">i</a></th>
+					<th class="assets03">operate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+					<th>Trade</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="list_con1">
+				    <td class="usertdtitle assets01">USDT</td>
+				    <td class="assets02">{$member.count|default=0.00}</td>
+				    <td class="assets02">{$member.rmb|default=0.00}</td>
+				    <td class="assets02">{$member.forzen_rmb|default=0.00}</td>
+				    <td class="cost assets03"><a href="{:U('User/pay')}">Recharge</a> &nbsp;&nbsp;<a href="{:U('User/draw')}">Withdraw</a></td>
+				    <td></td>
+				</tr>
+				<volist name='currency_user' id='vo' > 	
+                    <tr class="list_con2">
+					    <td class="usertdtitle assets01"> {$vo.currency_name|default='crypto currency'}{$vo.currency_mark|default='--'}</td>
+					    <td class="assets02"> {$vo.count|default=0.00}</td>
+					    <td class="assets02">{$vo.num|default=0.00}</td>
+					    <td class="assets02">{$vo.forzen_num|default=0.00}</td>
+					    <td class="cost interest assets03">
+						<a href="{:U('Pay/bpay',array('currency_id'=>$vo['currency_id']))}">Recharge coin</a>
+                        &nbsp;&nbsp;<a href="{:U('Pay/tcoin',array('currency_id'=>$vo['currency_id']))}">Withdraw coin</a>
+						</td>
+					    <td class="cost interest" style="color:#f60;"><a style="text-decoration: none;" href="{:U('Orders/index',array('currency'=>$vo['currency_mark']))}" ><input value="go Trade"  type="button"></a></td>
+				    </tr>
+                  </volist>  
+										
+							</tbody>
+		</table>
+	</div>
+</div>
+<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+	</div>
+<script>
+$(".menu").addClass("uc-current");
+
+function showTips(id,msg){
+    var tips = layer.tips(msg, id, {
+	tips: [1, '#fff8db'],
+	area: ['400px', '25px'], 
+    });
+    $(id).on('mouseout', function(){
+    layer.close(tips);
+    });
+}
+</script>   
+
+<!--footer start-->
+<include file="App/Home/View/Public/footer.html"/>
+<!--footer end-->
